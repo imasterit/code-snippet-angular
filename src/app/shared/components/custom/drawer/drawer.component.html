@@ -1,0 +1,75 @@
+<div id="drawer" class="bgPrimary">
+
+    <!-- Logo -->
+    <section id="logo" title="Welcome to PlayerHQ">
+        <img src="./assets/img/jr-logo.svg" alt="Logo">
+    </section>
+
+    <!-- Navigation -->
+    <section id="navigation">
+
+        <!-- Overwolf -->
+        <nav class="overwolf" *ngIf="isOverwolfWrapper">
+            <li>
+                <button mat-icon-button routerLink="/overwolf" routerLinkActive="active" matTooltip="Overwolf" matTooltipPosition="right">
+                    <i class="fab fa-wolf-pack-battalion"></i>
+                </button>
+            </li>
+        </nav>
+
+        <!-- Core -->
+        <nav>
+            <li *ngFor="let navCore of navigationService.routes[0]; index as i">
+                <button mat-icon-button [routerLink]="[navCore.route]" routerLinkActive="active" [matTooltip]="navCore.long" matTooltipPosition="right">
+                    <i [class]="navCore.fa_prefix" [ngClass]="navCore.fa_icon"></i>
+                </button>
+            </li>
+        </nav>
+
+        <!-- Utility -->
+        <nav>
+            <li *ngFor="let navUtility of navigationService.routes[1]; index as i">
+                <button mat-icon-button [routerLink]="[navUtility.route]" routerLinkActive="active" [matTooltip]="navUtility.long" matTooltipPosition="right">
+                    <i [class]="navUtility.fa_prefix" [ngClass]="navUtility.fa_icon"></i>
+                </button>
+            </li>
+            <!-- TestLab hidden on Production -->
+            <li *ngIf="env.production !== true">
+                <button mat-icon-button routerLink="/testlab" routerLinkActive="active" matTooltip="TestLab" matTooltipPosition="right">
+                    <i class="fas fa-vial"></i>
+                </button>
+            </li>
+        </nav>
+
+    </section>
+
+    <!-- Account -->
+    <!-- *ngIf="account"  -->
+    <section id="account">
+        <img
+            class="bgWarn mat-elevation-z6" [src]="account ? account.avatar : 'https://media.jackpotrising.com/avatars/v4/0.png'" [style.background-color]="account ? account.color : ''" alt="Avatar"
+            [matTooltip]="account ? userTooltip : 'Login'" matTooltipPosition="right"
+            [matMenuTriggerFor]="menu"
+        >
+        <mat-menu #menu="matMenu" [overlapTrigger]="true">
+            <!-- Not Logged In -->
+            <ng-container *ngIf="!account">
+                <button mat-menu-item routerLink="/login">
+                    <mat-icon>input</mat-icon>
+                    <span>Login to PlayerHQ</span>
+                </button>
+            </ng-container>
+            <!-- Logged In -->
+            <ng-container *ngIf="account">
+                <button mat-menu-item (click)="triggerLogout()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                </button>
+                <button mat-menu-item routerLink="/account">
+                    <mat-icon>account_circle</mat-icon>
+                    <span>Account</span>
+                </button>
+            </ng-container>
+        </mat-menu>
+    </section>
+</div>

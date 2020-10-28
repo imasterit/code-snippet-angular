@@ -1,0 +1,67 @@
+// Angular Material Themes
+
+@import '~@angular/material/theming';
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Available color palettes: https://material.io/design/color/
+
+// Import Themes
+@import 'theme-mat-pink';
+@import 'theme-jr';
+
+// Theme Mixin
+@mixin theme-mixin($theme, $surface) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, warn);
+    $jr-surface: #1D2D3F;
+
+    // Generic Overrides
+    .mat-drawer-backdrop.mat-drawer-shown { background-color: rgba(0,0,0,0.6) !important; }
+    .mat-body-1 { opacity: 0.6; }
+    .mat-tooltip { background: rgba(0,0,0,0.75); font-size: 12px; line-height: 18px;}
+    .mat-button-wrapper { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    // Form
+    .mat-form-field-invalid .mat-form-field-flex {
+        color: white;
+        label {color: white !important;}
+    }
+    .mat-form-field-invalid.ng-touched .mat-form-field-flex {
+        background-color: mat-color($accent); color: black;
+        label {color: black !important;}
+    }
+
+    // Reusable Classes
+    .colorPrimary { color: mat-color($primary); }
+    .colorAccent { color: mat-color($accent); }
+    .colorWarn { color: mat-color($warn); }
+    .bgPrimary { background-color: mat-color($primary); }
+    .bgAccent { background-color: mat-color($accent); }
+    .bgWarn { background-color: mat-color($warn); }
+    .bgSurface { background-color: $jr-surface; }
+    .snackbar {
+        background: black; color: white;
+        button { color: mat-color($primary); }
+    }
+}
+
+// Theme: Material Pink/BlueGrey
+.theme-material-pink {
+    $surface: #303030;
+    background: $surface;
+    @include angular-material-theme($mat-pink-theme);
+    @include theme-mixin($mat-pink-theme, #303030);
+}
+
+// Theme: Jackpot Rising
+.theme-jr {
+    $surface: #1D2D3F;
+    background: $surface;
+    @include angular-material-theme($jr-theme);
+    @include theme-mixin($jr-theme, $surface);
+}

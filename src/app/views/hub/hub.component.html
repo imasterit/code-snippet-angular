@@ -1,0 +1,98 @@
+<app-layout-core [left]="false" [right]="false">
+
+        <!-- Layout: Top Bar -->
+        <ng-container top-bar>
+            <mat-toolbar color="warn">
+                <mat-toolbar-row>
+                    <span>The Hub</span>
+                    <span class="top-bar-spacer"></span>
+                </mat-toolbar-row>
+            </mat-toolbar>
+        </ng-container>
+
+        <!-- Layout: Content -->
+        <ng-container layout-content>
+
+             <!-- Twitch Stream -->
+            <div class="pad">
+                <h2 class="mat-h2">Live on Twitch</h2>
+                <app-twitch></app-twitch>
+            </div>
+
+            <!-- Social Networks -->
+            <div class="pad">
+                <h2 class="mat-h2">Social Networks</h2>
+                <div id="social">
+                    <mat-card style="background: #7289da" mat-ripple (click)="openUrl('https://discord.gg/XEj8SFp')">
+                        <div>
+                            <i class="fab fa-discord"></i>
+                            <h4 class="mat-h4">Discord</h4>
+                        </div>
+                    </mat-card>
+                    <mat-card style="background: #3b5998" mat-ripple (click)="openUrl('https://www.facebook.com/JackpotRising/')">
+                        <div>
+                            <i class="fab fa-facebook"></i>
+                            <h4 class="mat-h4">Facebook</h4>
+                        </div>
+                    </mat-card>
+                    <mat-card style="background: #1da1f2" mat-ripple (click)="openUrl('https://twitter.com/JackpotRising')">
+                        <div>
+                            <i class="fab fa-twitter"></i>
+                            <h4 class="mat-h4">Twiter</h4>
+                        </div>
+                    </mat-card>
+                    <mat-card style="background: #6441a5" mat-ripple (click)="openUrl('https://www.twitch.tv/jackpotrising')">
+                        <div>
+                            <i class="fab fa-twitch"></i>
+                            <h4 class="mat-h4">Twitch</h4>
+                        </div>
+                    </mat-card>
+                    <mat-card style="background: #c13584" mat-ripple (click)="openUrl('https://www.instagram.com/jackpotrising/')">
+                        <div>
+                            <i class="fab fa-instagram"></i>
+                            <h4 class="mat-h4">Instagram</h4>
+                        </div>
+                    </mat-card>
+                    <mat-card style="background: #ff4500" mat-ripple (click)="openUrl('https://www.reddit.com/r/jackpotrising/')">
+                        <div>
+                            <i class="fab fa-reddit"></i>
+                            <h4 class="mat-h4">Reddit</h4>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+
+            <!-- Apps -->
+            <section class="pad">
+                <h2 class="mat-h2">Apps</h2>
+                <div id="apps">
+                    <mat-card color="warn" mat-ripple (click)="openUrl('https://apps.apple.com/us/app/jackpot-rising/id1213052660')">
+                        <div>
+                            <i class="fab fa-apple"></i>
+                            <h4 class="mat-h4">iOS</h4>
+                        </div>
+                    </mat-card>
+                    <mat-card color="warn" mat-ripple (click)="getAndroidApp()">
+                        <div>
+                            <i class="fab fa-android"></i>
+                            <h4 class="mat-h4">Android</h4>
+                        </div>
+                    </mat-card>
+                    <mat-card color="warn" mat-ripple (click)="openUrl('https://www.overwolf.com/app/Jackpot_Rising_Inc-Jackpot_Rising')">
+                        <div>
+                            <i class="fab fa-wolf-pack-battalion"></i>
+                            <h4 class="mat-h4">Overwolf</h4>
+                        </div>
+                    </mat-card>
+                    <mat-card color="warn" mat-ripple (click)="openUrl('https://support.jackpotrising.com/#/questions/general?id=how-do-i-install-the-pwa-progressive-web-app')">
+                        <div>
+                            <i class="fas fa-globe"></i>
+                            <h4 class="mat-h4">Web PWA</h4>
+                        </div>
+                    </mat-card>
+                </div>
+            </section>
+
+        </ng-container>
+
+    </app-layout-core>

@@ -1,0 +1,10 @@
+<div class="dialog">
+    <h1 mat-dialog-title>{{data.title}}</h1>
+    <p class="mat-body-1" mat-dialog-content *ngIf="data.message">{{data.message}}</p>
+    <div mat-dialog-content>
+        <img [src]="data.image" alt="Image">
+    </div>
+    <div mat-dialog-actions class="floatRight">
+        <button mat-button [mat-dialog-close]="false">Close</button>
+    </div>
+</div>

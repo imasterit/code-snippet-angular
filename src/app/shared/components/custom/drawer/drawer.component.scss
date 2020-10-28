@@ -1,0 +1,67 @@
+// https://material.io/design/layout/responsive-layout-grid.html#breakpoints
+$breakpointMobile: 599px;
+
+li { list-style: none; }
+i { font-size: 24px; line-height: 24px; }
+
+#drawer {
+    height: 100%; width: 100px;
+    overflow-y: auto;
+    text-align: center;
+
+    display: flex; flex-direction: column;
+}
+@media (max-width: $breakpointMobile) {
+    #drawer {display: none;}
+}
+
+#logo {
+    flex: 0 0 auto;
+    padding: 20px;
+    img {width: 60px; height: 60px;}
+}
+@media (max-width: $breakpointMobile) {
+    #logo {
+        padding: 10px;
+        img {width: 40px; height: 40px;}
+    }
+}
+
+#navigation {
+    padding: 20px 0;
+    flex: 1;
+
+    display: flex; flex-direction: column; justify-content: center;
+    nav {
+        flex: 0 0 auto;
+        li+li {margin-top: 5px;}
+    }
+    nav+nav {margin-top: 40px;}
+
+    button, a { opacity: 0.6; }
+    button:hover, button:focus, button:active,
+    a:hover, a:focus, a:active,
+    .active { opacity: 1; }
+}
+@media (max-width: $breakpointMobile) {
+    #navigation {
+        nav li+li {margin-top: 0;}
+        nav+nav {margin-top: 20px;}
+    }
+}
+
+#account {
+    flex: 0 0 auto;
+    padding: 20px;
+    img {
+        border: 2px solid white;
+        cursor: pointer;
+        width: 56px; height: 56px; border-radius: 50%; overflow: hidden;
+    }
+}
+@media (max-width: $breakpointMobile) {
+    #account {
+        padding: 10px;
+        img {width: 40px; height: 40px;}
+    }
+}

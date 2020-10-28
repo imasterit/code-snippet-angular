@@ -1,0 +1,41 @@
+// Cards
+// public bsPlaceholder = 'assets/img/jr-bg-pattern.png';
+
+.card {
+    overflow: hidden;
+    .iconPadRight {margin-right: 8px;}
+    .mat-card-content {
+        .mat-h4, .caption {margin: 0; padding: 0;}
+        .row+.row {margin-top: 8px;}
+    }
+}
+
+// Tournament
+.cardTournament {
+    width: 280px;
+    .mat-card-image {background: #242424;}
+    .mat-card-avatar {
+        border-radius: none;
+        .icon {width: 40px; height: 40px;}
+    }
+    .mat-card-actions {
+        margin: 0;
+        i {font-size: 20px; line-height: 20px;}
+    }
+}
+
+// Game
+.cardGame {
+    .media {
+        background: black;
+        background-position: center center;
+        background-size: cover;
+        height: 200px; margin: -16px -16px 16px;
+        display: flex; justify-content: center; align-items: center;
+        .icon {width: 150px; height: 150px; border-radius: 8px;}
+    }
+    .mat-card-actions {
+        margin: 0;
+        i {font-size: 20px; line-height: 20px;}
+    }
+}

@@ -1,0 +1,7 @@
+p {margin-bottom: 16px;}
+#cards {
+    display: flex; align-items: center;
+    margin-bottom: 10px;
+    i {flex: 0 0 auto; font-size: 36px; line-height: 36px;}
+    i+i {margin-left: 16px;}
+}

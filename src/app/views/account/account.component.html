@@ -1,0 +1,197 @@
+<app-layout-core [left]="false" [right]="true" [loading]="!account">
+
+        <!-- Layout: Top Bar -->
+        <ng-container top-bar>
+            <mat-toolbar color="warn">
+                <mat-toolbar-row>
+                    <span>Account</span>
+                    <span class="top-bar-spacer"></span>
+                    <mat-icon class="top-bar-icon" (click)="accountService.getAccount('Account Refreshed')">refresh</mat-icon>
+                </mat-toolbar-row>
+            </mat-toolbar>
+        </ng-container>
+
+        <!-- Layout: Nav Right -->
+        <ng-container layout-nav-right>
+
+            <!-- Form: My Profile -->
+            <ng-container *ngIf="sidebarState === 1">
+                <app-account-profile></app-account-profile>
+            </ng-container>
+
+            <!-- Form: Deposit (AuthNet) -->
+            <ng-container *ngIf="sidebarState === 2">
+                <app-account-deposit></app-account-deposit>
+            </ng-container>
+
+            <!-- Form: Deposit (Paypal) -->
+            <ng-container *ngIf="sidebarState === 3">
+                <app-account-deposit-paypal></app-account-deposit-paypal>
+            </ng-container>
+
+            <!-- Form: Withdraw Funds -->
+            <ng-container *ngIf="sidebarState === 4">
+                <app-account-withdraw></app-account-withdraw>
+            </ng-container>
+
+            <!-- Form: Add Payment Method -->
+            <ng-container *ngIf="sidebarState === 5">
+                <app-account-payment-methods [closable]="true" (success)="accountService.getPaymentMethods()"></app-account-payment-methods>
+            </ng-container>
+
+            <!-- Form: Connect Epic Account -->
+            <ng-container *ngIf="sidebarState === 6">
+                <app-account-connect-epic></app-account-connect-epic>
+            </ng-container>
+
+        </ng-container>
+
+        <!-- Layout: Content -->
+        <ng-container layout-content *ngIf="account">
+
+            <!-- Top -->
+            <header id="top" class="pad bgAnim">
+                <div>
+                    <div id="avatar">
+                        <!-- './assets/img/0.png' -->
+                        <app-jrm-avatars [avatar]="account.avatar" [color]="account.color" (avatarChange)="updateAvatar($event)" (colorChange)="updateColor($event)"></app-jrm-avatars>
+                    </div>
+                    <h1 class="mat-display-2">
+                        {{account.username}}
+                        <sup><i class="fas fa-badge-check colorPrimary" *ngIf="account.registered" matTooltip="Registered"></i></sup>
+                    </h1>
+                    <h1 class="mat-h1">{{account.account.balance_formatted}} Balance</h1>
+                    <div class="button-row">
+                        <button mat-raised-button color="primary" (click)="toggleSidebar(1)"><i class="fas fa-user-edit"></i> Update Profile</button>
+                        <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Wallet -->
+            <section class="pad">
+                <h2 class="mat-h2"><i class="fas fa-wallet colorPrimary"></i> Wallet</h2>
+
+                <!-- Money In/Out -->
+                <div id="money">
+                    <mat-card id="deposit">
+                        <h3 class="mat-h3">Deposit</h3>
+                        <i class="fas fa-envelope-open-dollar bigIcon"></i>
+                        <div class="buttons">
+                            <button mat-raised-button color="primary" (click)="toggleSidebar(2)" [disabled]="!paymentMethods">Via Credit Card</button>
+                            <button mat-raised-button color="primary" (click)="toggleSidebar(3)">Via Paypal</button>
+                        </div>
+                    </mat-card>
+                    <mat-card id="withdraw">
+                        <h3 class="mat-h3">Withdraw</h3>
+                        <i class="fas fa-hand-holding-usd bigIcon"></i>
+                        <div class="buttons">
+                            <button mat-raised-button color="warn" (click)="toggleSidebar(4)" [disabled]="account.account.balance < 5">Submit Request</button>
+                            <button mat-stroked-button (click)="history=!history">{{history ? 'Hide' : 'View'}} History</button>
+                        </div>
+                    </mat-card>
+                </div>
+                <!-- History -->
+                <div *ngIf="history">
+                    <table cellpadding="0" cellspacing="0">
+                        <thead class="bgWarn">
+                            <tr>
+                                <th>Amount</th>
+                                <th>Timestamp</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let t of transactions; index as i">
+                                <td>{{t.amount_formatted}}</td>
+                                <td>{{parseWithdrawTimestamp(t.last_updated)}}</td>
+                                <td>{{parseWithdrawState(t.state)}}</td>
+                                <td>{{t.notes || "--"}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Payment Methods -->
+                <mat-card class="noPadding">
+                    <!-- List -->
+                    <ng-container *ngIf="paymentMethods && paymentMethods.length > 0">
+                        <mat-list class="paymentMethodList">
+                            <ng-container *ngFor="let pm of paymentMethods; let first = first; let last = last;">
+                                <mat-list-item>
+                                    <span mat-list-icon>
+                                        <i *ngIf="pm.card_type === 'visa'" class="fab fa-cc-visa"></i>
+                                        <i *ngIf="pm.card_type === 'mastercard'" class="fab fa-cc-mastercard"></i>
+                                        <i *ngIf="pm.card_type === 'discover'" class="fab fa-cc-discover"></i>
+                                        <i *ngIf="pm.card_type === 'americanexpress'" class="fab fa-cc-amex"></i>
+                                        <i *ngIf="pm.card_type === 'jcb'" class="fab fa-cc-jcb"></i>
+                                        <i *ngIf="pm.card_type === 'dinersclub'" class="fab fa-cc-diners-club"></i>
+                                    </span>
+                                    <h4 mat-line>{{pm.card_type | uppercase}} card ending in {{pm.last4}}</h4>
+                                    <p mat-line class="emp-med">Expires {{pm.expiration_month}}/{{pm.expiration_year}}</p>
+                                    <button mat-icon-button (click)="deletePaymentMethod(pm)"><mat-icon>delete</mat-icon></button>
+                                </mat-list-item>
+                                <mat-divider *ngIf="!first"></mat-divider>
+                            </ng-container>
+                        </mat-list>
+                        <mat-divider></mat-divider>
+                    </ng-container>
+                    <!-- Add Button -->
+                    <footer><button mat-raised-button color="primary" (click)="toggleSidebar(5)"><i class="fas fa-plus"></i> Credit Card</button></footer>
+                </mat-card>
+            </section>
+
+            <mat-divider class="pageRule"></mat-divider>
+
+            <!-- Connect -->
+            <section class="pad">
+                <h2 class="mat-h2"><i class="fas fa-plug colorPrimary"></i> Connect</h2>
+                <mat-card class="noPadding">
+                    <mat-list>
+                        <!-- Epic -->
+                        <mat-list-item>
+                            <mat-icon mat-list-icon><img src="./assets/img/connections/epic.png" alt="Epic"></mat-icon>
+                            <h3 mat-line class="mat-h3">Epic Games</h3>
+                            <p mat-line class="mat-body-1">Connect your account.</p>
+                            <div class="buttons" (click)="toggleSidebar(6)">
+                                <button mat-raised-button color="primary" *ngIf="!account.social.epic_account_id">Connect</button>
+                                <button mat-stroked-button *ngIf="account.social.epic_account_id">{{account.social.epic_username || '(Epic Name Missing))'}}</button>
+                            </div>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <!-- Twitch -->
+                        <mat-list-item>
+                            <mat-icon mat-list-icon><i class="fab fa-twitch"></i></mat-icon>
+                            <h3 mat-line class="mat-h3">Twitch</h3>
+                            <p mat-line class="mat-body-1">Promote your stream.</p>
+                            <div class="buttons">
+                                <button mat-raised-button color="primary" (click)="connectTwitch()" *ngIf="!account.social.twitch">Connect</button>
+                                <ng-container *ngIf="account.social.twitch">
+                                    <a mat-raised-button color="warn" [href]="account.social.twitch" target="_blank">Launch</a>
+                                    <i class="fas fa-edit emp-med" (click)="connectTwitch()"></i>
+                                </ng-container>
+                            </div>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <!-- YouTube -->
+                        <mat-list-item>
+                            <mat-icon mat-list-icon><i class="fab fa-youtube"></i></mat-icon>
+                            <h3 mat-line class="mat-h3">YouTube</h3>
+                            <p mat-line class="mat-body-1">Promote your videos.</p>
+                            <div class="buttons">
+                                <button mat-raised-button color="primary" (click)="connectYoutube()" *ngIf="!account.social.youtube">Connect</button>
+                                <ng-container *ngIf="account.social.youtube">
+                                    <a mat-raised-button color="warn" [href]="account.social.youtube" target="_blank">Launch</a>
+                                    <i class="fas fa-edit emp-med" (click)="connectYoutube()"></i>
+                                </ng-container>
+                            </div>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-card>
+            </section>
+
+            <!-- <mat-divider class="pageRule"></mat-divider><section class="pad"><pre>{{account | json}}</pre></section> -->
+
+        </ng-container>
+
+    </app-layout-core>

@@ -1,0 +1,61 @@
+// Game Details
+
+.pad+.pad {border-top: 1px solid rgba(255,255,255,0.1); margin-top: 16px; padding-top: 16px;}
+
+#top {
+    display: flex; justify-content: center; align-items: center;
+    margin: 200px 0 50px;
+
+    h1 {margin: 0; padding: 0; text-align: center; text-shadow: 0 0 20px rgba(0,0,0,1);}
+    div {
+        text-align: center;
+        .icon, .mat-h1 {margin-bottom: 16px;}
+        .icon {width: 200px; height: 200px; border-radius: 8px;}
+        .mat-display-3 {font-weight: bold; text-transform: uppercase;}
+        #cta {
+            display: flex; justify-content: center; align-items: center;
+            a+a, a+button, button+a, button+button {margin-left: 16px;}
+            a img {width: auto; height: 40px;}
+            button i, a i {margin-right: 8px;}
+        }
+    }
+}
+// Horz
+@media (max-height: 480px) {
+    #top {
+        margin: 50px 0;
+        div .icon {width: 120px; height: 120px;}
+    }
+}
+@media (max-height: 320px) {
+    #top { margin: 16px 0; }
+}
+// Vert
+@media (max-width: 480px) {
+    #top { margin: 50px 0; }
+}
+@media (max-width: 320px) {
+    #top { margin: 16px 0; }
+}
+
+#media {
+    .cell {overflow: hidden; cursor: pointer;}
+    #video {
+        iframe {width: 356px; height: 200px; border-radius: 8px;}
+    }
+    .screenshot {
+        background: transparent center center no-repeat; background-size: cover;
+        display: block !important; width: 200px; height: 200px;
+        border-radius: 8px;
+    }
+}
+@media (max-width: 480px) {
+    #media {
+        #video {
+            iframe {width: 267px; height: 150px; }
+        }
+        .screenshot {width: 150px; height: 150px;}
+    }
+}
+
+#tournaments {margin-top: 16px;}

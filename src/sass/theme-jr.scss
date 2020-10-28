@@ -1,0 +1,150 @@
+// Material Theme for Jackpot Rising
+// Generated: http://mcg.mbitson.com/
+
+$jr-surface: #1D2D3F;
+
+$jr-primary: (
+    50 : #fbe7e9,
+    100 : #f5c2c9,
+    200 : #ee99a5,
+    300 : #e77080,
+    400 : #e15265,
+    500 : #dc334a,
+    600 : #d82e43,
+    700 : #d3273a,
+    800 : #ce2032,
+    900 : #c51422,
+    A100 : #fff6f6,
+    A200 : #ffc3c6,
+    A400 : #ff9096,
+    A700 : #ff767f,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$jr-accent: (
+    50 : #effdff,
+    100 : #d7fbff,
+    200 : #bcf9ff,
+    300 : #a1f6ff,
+    400 : #8cf4ff,
+    500 : #78f2ff,
+    600 : #70f0ff,
+    700 : #65eeff,
+    800 : #5becff,
+    900 : #48e8ff,
+    A100 : #effdff,
+    A200 : #78f2ff,
+    A400 : #65eeff,
+    A700 : #48e8ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$jr-median: (
+    50 : #e8eaed,
+    100 : #c5ccd3,
+    200 : #9faab6,
+    300 : #788799,
+    400 : #5b6e83,
+    500 : #3e546d,
+    600 : #384d65,
+    700 : #30435a,
+    800 : #283a50,
+    900 : #5b6e83, // was #1b293e,
+    A100 : #80b1ff,
+    A200 : #4d92ff,
+    A400 : #1a73ff,
+    A700 : #0163ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+// Override: Dark Foreground
+$mat-dark-theme-foreground: (
+    base: white,
+    divider: $light-dividers,
+    dividers: $light-dividers,
+    disabled: $light-disabled-text,
+    disabled-button: rgba(white, 0.3),
+    disabled-text: $light-disabled-text,
+    elevation: black,
+    hint-text: $light-disabled-text,
+    secondary-text: $light-secondary-text,
+    icon: white,
+    icons: white,
+    text: white,
+    slider-min: white,
+    slider-off: rgba(white, 0.3),
+    slider-off-active: rgba(white, 0.3),
+);
+
+// Override: Dark Background
+$mat-dark-theme-background: (
+    status-bar: black,
+    app-bar: map_get($jr-median, 900),
+    background: $jr-surface, // surface
+    hover: rgba(white, 0.04),
+    card: map_get($jr-median, 800),
+    dialog: map_get($jr-median, 800),
+    disabled-button: rgba(white, 0.12),
+    raised-button: map-get($jr-median, 800),
+    focused-button: $light-focused,
+    selected-button: map_get($jr-median, 900),
+    selected-disabled-button: map_get($jr-median, 800),
+    disabled-button-toggle: black,
+    unselected-chip: map_get($jr-median, 700),
+    disabled-list-option: black,
+);
+
+// Define Theme
+$jr-theme-primary: mat-palette($jr-primary);
+$jr-theme-accent: mat-palette($jr-accent, A200, A100, A400);
+$jr-theme-warn: mat-palette($jr-median);
+$jr-theme: mat-dark-theme(
+    $jr-theme-primary,
+    $jr-theme-accent,
+    $jr-theme-warn
+);

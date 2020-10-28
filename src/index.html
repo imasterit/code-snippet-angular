@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PlayerHQ by Jackpot Rising</title>
+    <base href="/">
+
+    <meta name="description" content="PlayerHQ is the perfect player companion for the Jackpot Rising platform."/>
+	<meta name="keywords" content="mobile, app, jackpot, rising, jackpot rising, real money, money, cash, esports, e-sports">
+    <meta name="author" content="Jackpot Rising Inc">
+
+    <meta charset="UTF-8" name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover' />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <meta name="theme-color" content="#1D2D3F">
+
+    <meta name="apple-itunes-app" content="app-id=1213052660">
+
+    <meta name="apple-mobile-web-app-title" content="PlayerHQ" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <link rel="apple-touch-icon" href="assets/icons/ios-touch-icon.png"> <!-- default -->
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/icons/ios-touch-icon.png"> <!-- ipad -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/ios-touch-icon.png"> <!-- iphone ret -->
+    <link rel="apple-touch-icon" sizes="167x167" href="assets/icons/ios-touch-icon.png"> <!-- ipad ret -->
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="manifest" href="manifest.json">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        html {
+            background-color: #1D2D3F; color: #FFF; font-family: Roboto, "Helvetica Neue", sans-serif;
+            padding-bottom: env(safe-area-inset-bottom); padding-left: env(safe-area-inset-left);
+        }
+        .loading {position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);}
+    </style>
+</head>
+<body class="theme-jr">
+    <app-root>
+        <div class="loading"><img src="assets/img/jr-logo.svg" alt="Loading..."></div>
+    </app-root>
+
+    <!-- Authorize.net (Sandbox | Production) -->
+    <!-- <script src="https://jstest.authorize.net/v1/Accept.js" charset="utf-8"> </script> -->
+    <script src="https://js.authorize.net/v1/Accept.js" charset="utf-8"> </script>
+
+    <!-- Paypal (Sandbox | Production) -->
+    <!-- <script src="https://www.paypal.com/sdk/js?client-id=AVjmTt6ngLMy2hnmU3nEfRRr8F5BQJjkqpMXg_Esmj9lQ3alO6OMUEu1-8zqL3tUK6frPBGtg0_ufvL-"></script> -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AQltqs54EciMjOL5HSiLJmKj8YWBauH778pfYmCqGJmlL5qejFtcTS9czgq1lpM4u2YC_rhAFUfysE3h&disable-funding=credit"></script>
+
+    <!-- Google Maps: https://developers.google.com/maps/documentation/javascript/ -->
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqd6EWXE1H0OxJn_HcuPrbcobmg-CAGho" async defer></script> -->
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-65205116-5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-65205116-5');
+    </script>
+
+    <!-- Segment -->
+    <!-- <script>
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src="https://cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(n,a);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
+        analytics.load("PkQsqtyUVvM4Lk3mjWNGZVPFttGWeLGq");
+        analytics.page();
+        }}();
+    </script> -->
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/a70fc06123.js"></script>
+
+    <!-- Twitch Embed -->
+    <script src="https://embed.twitch.tv/embed/v1.js"></script>
+
+    <noscript>Please enable Javascript to use PlayerHQ.</noscript>
+</body>
+</html>

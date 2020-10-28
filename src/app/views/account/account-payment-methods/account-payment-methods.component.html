@@ -1,0 +1,46 @@
+<section>
+    <header class="sidebarHeader">
+        <h2 class="mat-h2 ellipsis">Add Credit Card</h2>
+        <i class="far fa-times" (click)="sidenavService.toggle('right')" *ngIf="closable === true"></i>
+    </header>
+
+    <p class="mat-body-1">Adding a card allows Jackpot Rising to make charges against it. Additionally, you agree you are <strong>18+ years of age</strong> and agree to following:</p>
+    <p><a mat-stroked-button href="https://terms.jackpotrising.com/" target="_blank">View Terms & Conditions</a></p>
+
+    <div id="cards">
+        <i class="fab fa-cc-visa"></i>
+        <i class="fab fa-cc-discover"></i>
+        <i class="fab fa-cc-mastercard"></i>
+        <i class="fab fa-cc-jcb"></i>
+    </div>
+
+    <form name="formPaymentMethod" id="formPaymentMethod" [formGroup]="formPaymentMethod" (ngSubmit)="submit()">
+        <fieldset>
+            <mat-form-field appearance="fill">
+                <mat-label>Card Number</mat-label>
+                <input matInput type="text" formControlName="cardNumber" #cardNumber autocomplete="off" required>
+                <mat-hint>{{cardNumber.value.length || '0'}} of 13-16 digits</mat-hint>
+            </mat-form-field>
+        </fieldset>
+        <fieldset>
+            <mat-form-field appearance="fill"><mat-label>CVC Code</mat-label><input matInput type="text" formControlName="cardCode" autocomplete="off" required></mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Expire Month</mat-label>
+                <mat-select placeholder="Select" formControlName="month" required>
+                    <mat-option *ngFor="let m of months" [value]="m.id">{{m.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Expire Year</mat-label>
+                <mat-select placeholder="Select" formControlName="year" required>
+                    <mat-option *ngFor="let s of years" [value]="s.id">{{s.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </fieldset>
+        <fieldset>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!formPaymentMethod.valid">Submit</button>
+        </fieldset>
+    </form>
+
+    <!-- <br><pre>{{formPaymentMethod.value | json}}</pre><br> -->
+</section>

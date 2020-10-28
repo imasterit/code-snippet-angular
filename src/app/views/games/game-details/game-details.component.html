@@ -1,0 +1,98 @@
+<app-layout-core [left]="false" [right]="false" [loading]="!game" [background]="game ? game.media.backsplash : undefined">
+
+    <!-- Layout: Top Bar -->
+    <ng-container top-bar>
+        <mat-toolbar>
+            <mat-toolbar-row>
+                <i class="fas fa-arrow-left top-bar-hamburger" [routerLink]="['/games']"></i>
+                <span>Game</span>
+                <span class="top-bar-spacer"></span>
+                <!-- <button mat-icon-button class="top-bar-icon" (click)="setNotifications()">
+                    <i mat-icon-button class="fas fa-bell"></i>
+                </button> -->
+                <button mat-icon-button class="top-bar-icon" (click)="share()" *ngIf="ctx.isAndroid() || ctx.isIos()">
+                    <i mat-icon-button class="fas fa-share-alt"></i>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </ng-container>
+
+    <!-- Layout: Content -->
+    <ng-container layout-content>
+
+        <!-- Dynamic Section Contents -->
+        <ng-container *ngIf="game">
+
+            <!-- Top -->
+            <header id="top">
+                <div>
+                    <img class="icon bgWarn mat-elevation-z4" [src]="game.media.icon" alt="icon">
+                    <h1 class="mat-display-3">{{game.name}}</h1>
+                    <h1 class="mat-h1">By {{game.property.name}}</h1>
+                    <div id="cta">
+                        <!-- Website -->
+                        <a mat-raised-button color="primary" *ngIf="game.website" [href]="game.website" target="_blank">
+                            <i class="fas fa-globe"></i> Visit Website
+                        </a>
+                        <!-- Mobile -->
+                        <a *ngIf="game.ios.link" [href]="game.ios.link" target="_blank">
+                            <img src="./assets/img/app-store-ios.png" alt="Get on iOS App Store">
+                        </a>
+                        <a *ngIf="game.android.link" [href]="game.android.link" target="_blank">
+                            <img src="./assets/img/app-store-android.png" alt="Get Android App">
+                        </a>
+                        <!-- Overwolf -->
+                        <a *ngIf="game.overwolf.id" href="https://www.overwolf.com/app/Jackpot_Rising_Inc-Jackpot_Rising" target="_blank">
+                            <img src="./assets/img/app-store-overwolf.png" alt="Get on Overwolf">
+                        </a>
+                        <!-- Arcade -->
+                        <button *ngIf="game.arcade.active === true" mat-raised-button color="primary" (click)="dialogArcade()">
+                            <i class="fas fa-dice"></i> Play on Arcade
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Details -->
+            <mat-card>
+                <section class="pad" *ngIf="game.description">
+                    <h2 class="mat-h2">Description</h2>
+                    <p class="mat-body-1">{{game.description}}</p>
+                </section>
+                <section class="pad">
+                    <mat-chip-list>
+                        <mat-chip *ngFor="let chip of game.verticals; index as i">{{chip.name || '•'}}</mat-chip>
+                        <mat-chip *ngFor="let chip of game.platforms; index as i">{{chip.name || '•'}}</mat-chip>
+                        <mat-chip *ngFor="let chip of game.genres; index as i">{{chip.name || '•'}}</mat-chip>
+                    </mat-chip-list>
+                </section>
+                <section class="pad" id="media" *ngIf="game.media.video_url || game.media.screenshots.length > 0">
+                    <app-carousel label="Media" [data]="game.media.screenshots">
+                        <ng-container carousel-content>
+                            <div class="cell" id="video">
+                                <iframe [src]="game.media.video_url | safe" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                            </div>
+                            <div class="cell" *ngFor="let screenshot of game.media.screenshots" (click)="dialogScreenshot(screenshot)">
+                                <div class="screenshot" [style.background-image]="'url('+screenshot.url+')'" [matTooltip]="screenshot.caption">&nbsp;</div>
+                            </div>
+                        </ng-container>
+                    </app-carousel>
+                </section>
+            </mat-card>
+
+            <!-- Tournaments -->
+            <section class="pad" id="tournaments" *ngIf="tournaments && tournaments.length > 0">
+                <app-carousel label="Tournaments" [data]="tournaments">
+                    <ng-container carousel-content>
+                        <div *ngFor="let card of tournaments" class="cell">
+                            <app-card type="tournament" [data]="card"></app-card>
+                        </div>
+                    </ng-container>
+                </app-carousel>
+            </section>
+
+        </ng-container>
+
+    </ng-container>
+
+</app-layout-core>

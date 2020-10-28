@@ -1,0 +1,25 @@
+<section>
+
+    <header class="sidebarHeader">
+        <h2 class="mat-h2 ellipsis">Deposit via Paypal</h2>
+        <i class="far fa-times" (click)="sidenavService.toggle('right')"></i>
+    </header>
+    <p class="mat-body-1">Must be within <strong>$5.00 to $1,000.00</strong> and you will be charged an additional <strong>3.5% handling fee</strong>.</p>
+
+    <form name="formPaypal" id="formPaypal" [formGroup]="formPaypal">
+        <fieldset>
+            <mat-form-field appearance="fill">
+                <mat-label>Amount</mat-label>
+                <input matInput type="number" formControlName="amount_to_add"
+                    (input)="calcHandlingFee(formPaypal.value.amount_to_add)" required>
+                <mat-hint>{{formPaypal.value.amount_to_charge | currency:'en-US':'$'}} With Handling Fee</mat-hint>
+            </mat-form-field>
+            <input type="hidden" formControlName="amount_to_charge">
+        </fieldset>
+        <fieldset [style.visibility]="formPaypal.value.amount_to_add >= 5 && formPaypal.value.amount_to_add <= 1000 ? 'visible' : 'hidden'">
+            <div id="paypal-button-container"></div>
+        </fieldset>
+    </form>
+
+    <!-- <br><br><pre>{{formPaypal.value | json}}</pre> -->
+</section>

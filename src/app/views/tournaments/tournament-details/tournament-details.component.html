@@ -1,0 +1,337 @@
+<app-layout-core [left]="false" [right]="false" [loading]="!tournament" [background]="tournament ? tournament.game.backsplash : undefined">
+
+    <!-- Layout: Top Bar -->
+    <ng-container top-bar *ngIf="tournament">
+        <mat-toolbar>
+            <mat-toolbar-row>
+                <i class="fas fa-arrow-left top-bar-hamburger" [routerLink]="['/tournaments']"></i>
+                <img class="game-icon bgWarn" [src]="tournament.game.icon" alt="icon">
+                <span>Tournament</span>
+                <span class="top-bar-spacer"></span>
+                <button mat-icon-button class="top-bar-icon" (click)="getTournamentDetails('Tournament refreshed!')">
+                    <i mat-icon-button class="fas fa-sync"></i>
+                </button>
+                <button mat-icon-button class="top-bar-icon" (click)="toggleFullscreen()">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button mat-icon-button class="top-bar-icon" (click)="share()" *ngIf="ctx.isAndroid() || ctx.isIos()">
+                    <i mat-icon-button class="fas fa-share-alt"></i>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </ng-container>
+
+    <!-- Layout: Content -->
+    <ng-container layout-content>
+
+        <!-- Dynamic Section Contents -->
+        <ng-container *ngIf="tournament">
+
+            <!-- Top -->
+            <header id="top">
+                <div>
+                    <h1 class="mat-display-3">{{tournament.name}}</h1>
+                    <h1 class="mat-h1">
+                        <ng-container [ngSwitch]="tournament.grand_jackpot.mode">
+                            <ng-container *ngSwitchCase="1">{{tournament.grand_jackpot.real_money.formatted || "•"}}</ng-container>
+                            <ng-container *ngSwitchCase="2">{{tournament.grand_jackpot.game_currency.amount || "•"}} {{tournament.grand_jackpot.game_currency.name || "•"}}</ng-container>
+                            <ng-container *ngSwitchCase="3">{{tournament.grand_jackpot.prizes || "•"}} Prize(s)</ng-container>
+                        </ng-container>
+                        <span class="emp-med"> / </span>
+                        {{tournament.duration.from_now.formatted}}
+                    </h1>
+                </div>
+            </header>
+
+            <!-- Details -->
+            <!-- tournament.tiers.length <= 1 -->
+            <div id="matCardDetails">
+
+                <!-- Tier Tabs -->
+                <mat-tab-group mat-stretch-tabs dynamicHeight animationDuration="0" [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)" color="warn" backgroundColor="warn" [ngClass]="{'hideTabs': tournament.tiers.length < 2}">
+                    <mat-tab *ngFor="let tier of tournament.tiers">
+                        <ng-template mat-tab-label>
+                            <ng-container *ngIf="tournament.current_player && tournament.current_player.tier_id === tier.tier_id">
+                                <mat-icon ><i class="fas fa-check-circle"></i></mat-icon>
+                            </ng-container>
+                            <ng-container *ngIf="!tournament.current_player || tournament.current_player.tier_id !== tier.tier_id">
+                                <mat-icon ><i class="fas fa-flag"></i></mat-icon>
+                            </ng-container>
+                            <br>
+                            {{tournService.parseTierName(tier.tier_id)}}
+                        </ng-template>
+                        <div class="tabContent">
+
+                            <!-- Sidebar -->
+                            <aside class="column" id="sidebar">
+
+                                <!-- Jackpot/Entry -->
+                                <mat-card id="jackpotEntry">
+                                    <!-- Mode: 1:Real-Money, 2:Game Currency, 3:Prizes -->
+                                    <small class="caption emp-med">{{tournament.tiers.length > 1 ? 'Tier' : 'Total'}} Jackpot</small>
+                                    <ng-container [ngSwitch]="tournament.grand_jackpot.mode">
+                                        <h1 class="mat-h1" *ngSwitchCase="1">{{tier.jackpot.real_money.formatted || "•"}}</h1>
+                                        <h1 class="mat-h1" *ngSwitchCase="2">{{tier.jackpot.game_currency.amount || "•"}} {{tier.jackpot.game_currency.name || "•"}}</h1>
+                                        <h1 class="mat-h1" *ngSwitchCase="3">{{tier.jackpot.prizes.length || "•"}} Prize(s)</h1>
+                                    </ng-container>
+
+                                    <!-- Entry -- 1: Upcoming, 2: Active, 3: Complete, 4: Settled -->
+                                    <ng-container *ngIf="tournament.duration.state === 1">
+                                        <button mat-raised-button disabled>Upcoming</button>
+                                    </ng-container>
+                                    <ng-container *ngIf="tournament.duration.state === 2">
+                                        <!-- Not Logged In -->
+                                        <ng-container *ngIf="tournament.current_player === null">
+                                            <button mat-raised-button color="primary" routerLink="/login">Login and enter for {{tier.buyin.amount_formatted}}</button>
+                                        </ng-container>
+                                        <!-- Logged In -->
+                                        <ng-container *ngIf="tournament.current_player">
+                                            <!-- Can Enter -->
+                                            <ng-container *ngIf="tournament.current_player.entry_state === 1">
+                                                <!-- No Locked Tier -or- Matches Locked Tier -->
+                                                <ng-container *ngIf="tournament.current_player.tier_id === 0 || tier.tier_id === tournament.current_player.tier_id">
+                                                    <!-- Limited Pass Entry Text -->
+                                                    <ng-container *ngIf="tier.buyin.day_pass">
+                                                        <button mat-raised-button color="primary" (click)="enterTournament()">Purchase {{tier.buyin.amount_formatted}} Pass</button>
+                                                    </ng-container>
+                                                    <!-- Normal Entry Text -->
+                                                    <ng-container *ngIf="!tier.buyin.day_pass">
+                                                        <button mat-raised-button color="primary" (click)="enterTournament()">Enter for {{tier.buyin.amount_formatted}}</button>
+                                                    </ng-container>
+                                                </ng-container>
+                                                <!-- Is Locked Tier -and- Doesn't Match Locked Tier -->
+                                                <ng-container *ngIf="tournament.current_player.tier_id !== 0 && tier.tier_id !== tournament.current_player.tier_id">
+                                                    <button mat-raised-button color="primary" disabled>Tier Unavailable</button>
+                                                </ng-container>
+                                            </ng-container>
+                                            <!-- Has Entered -->
+                                            <ng-container *ngIf="tournament.current_player.entry_state === 2" [ngSwitch]="tournament.vertical">
+                                                <!-- Case: Top Golf (vertical: 5) -->
+                                                <ng-container *ngSwitchCase="5">
+                                                    <button mat-raised-button color="primary" routerLink="/sync" [disabled]="ctx.isWindowGreaterThan(768)">
+                                                        <i class="fas fa-qrcode" style="margin-right: 8px;"></i> Scan QR Code
+                                                    </button>
+                                                </ng-container>
+                                                <!-- Default -->
+                                                <ng-container *ngSwitchDefault>
+                                                    <!-- Normal Entered State -->
+                                                    <ng-container *ngIf="!tournament.current_player.pass_expire"><button mat-raised-button disabled>Entered!</button></ng-container>
+                                                    <!-- Pass Expiration State -->
+                                                    <ng-container *ngIf="tournament.current_player.pass_expire"><button mat-raised-button disabled>Pass Expires {{expireTimeString || "..."}}</button></ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                            <!-- Entries Complete -->
+                                            <ng-container *ngIf="tournament.current_player.entry_state === 3">
+                                                <button mat-raised-button disabled>Entries Complete</button>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngIf="tournament.duration.state === 3">
+                                        <button mat-raised-button disabled>Completed</button>
+                                    </ng-container>
+                                    <ng-container *ngIf="tournament.duration.state === 4">
+                                        <button mat-raised-button disabled>Settled</button>
+                                    </ng-container>
+
+                                    <!-- Get Game Button -->
+                                    <button mat-stroked-button [routerLink]="['/games', tournament.game.id]">Get {{tournament.game.name}}</button>
+                                </mat-card>
+
+                                <!-- Vertical & Platforms -->
+                                <!-- 1:sdk, 2:arcade, 3:overwolf, 4:apilink, 5:topgolf -->
+                                <mat-card>
+                                    <h3 class="mat-h3"><strong>{{tournService.parseVertical(tournament.vertical)}}</strong></h3>
+                                    <ul class="attrList">
+                                        <li *ngFor="let platform of tournament.platforms"><h4 class="mat-h4 emp-med">{{platform.name}}</h4></li>
+                                    </ul>
+                                </mat-card>
+
+                                <!-- Parameters -->
+                                <!-- 1:string, 2:int, 3:float, 4:bool, 5:range -->
+                                <mat-card *ngIf="tier.parameters && tier.parameters.length > 0">
+                                    <ul class="attrList">
+                                        <ng-container *ngFor="let param of tier.parameters">
+                                            <li *ngIf="param.display === true">
+                                                <h5 class="mat-h5 emp-med">
+                                                    <i [ngClass]="[param.fa_icon_type, param.fa_icon_value]"></i>
+                                                    {{param.label}}
+                                                </h5>
+                                                <ng-container *ngIf="param.display_value">
+                                                    {{param.display_value}}
+                                                </ng-container>
+                                                <ng-container *ngIf="!param.display_value">
+                                                    <ng-container [ngSwitch]="param.value_type">
+                                                        <h3 class="mat-h3" *ngSwitchCase="1">{{param.value_string}} {{param.scoring_value ? 'Points' : ''}}</h3>
+                                                        <h3 class="mat-h3" *ngSwitchCase="2">{{param.value_integer}} {{param.scoring_value ? 'Points' : ''}}</h3>
+                                                        <h3 class="mat-h3" *ngSwitchCase="3">{{param.value_float}} {{param.scoring_value ? 'Points' : ''}}</h3>
+                                                        <h3 class="mat-h3" *ngSwitchCase="4">{{param.value_boolean}} {{param.scoring_value ? 'Points' : ''}}</h3>
+                                                        <h3 class="mat-h3" *ngSwitchCase="5">{{param.value_integer}} {{param.scoring_value ? 'Points' : ''}}</h3>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </li>
+                                        </ng-container>
+                                    </ul>
+                                </mat-card>
+
+                            </aside>
+
+                            <!-- Leaderboard -->
+                            <mat-card class="column" id="leaderboard">
+
+                                <!-- Header -->
+                                <header>
+                                    <h2 class="mat-h2">{{tournService.parseTierName(tier.tier_id)}} Tier</h2>
+                                    <p class="mat-body-1" [innerHTML]="tier.description ? (tier.description | linkify | html) : 'There are no specific conditions required to participate.'"></p>
+                                </header>
+
+                                <!-- Current Player -->
+                                <ng-container *ngIf="tournament.current_player && (tournament.current_player.tier_id === tier.tier_id)">
+                                    <h2 class="mat-h2">{{tournament.current_player.account.username}}</h2>
+                                    <mat-card class="bgWarn" id="currentPlayer">
+                                        <div class="cell" id="cpDetails">
+                                            <img [src]="tournament.current_player.account.avatar" class="avatar bgWarn" [style.backgroundColor]="tournament.current_player.account.color">
+                                            <h2 class="mat-h"><i class="fas fa-award emp-med"></i> {{tournament.current_player.rank}}</h2>
+                                            <p class="caption emp-med" *ngIf="tournament.current_player.score > 0">{{tournament.current_player.score}}</p>
+                                        </div>
+                                        <div class="cell" id="cpProgress">
+
+                                            <!-- Entries -->
+                                            <div class="row">
+                                                <h3 class="mat-h3">{{tournament.current_player.entry_count}} Total Entry(s)</h3>
+                                                <!-- If: Entry Max -->
+                                                <ng-container *ngIf="tier.buyin.max_entries > 0">
+                                                    <mat-progress-bar mode="determinate" [value]="calcPercentAmount(tournament.current_player.entry_count, tier.buyin.max_entries)"></mat-progress-bar>
+                                                    <small class="caption emp-med bottomLabels">
+                                                        <span>Min. 1</span>
+                                                        <span>Max. {{tier.buyin.max_entries}}</span>
+                                                    </small>
+                                                </ng-container>
+                                                <!-- If: NO Entry Max -->
+                                                <ng-container *ngIf="tier.buyin.max_entries === 0">
+                                                    <small class="caption emp-med">Unlimited</small>
+                                                </ng-container>
+                                            </div>
+
+                                            <!-- Attempts -->
+                                            <div class="row">
+                                                <h3 class="mat-h3">{{tournament.current_player.attempt_count}} Total Attempt(s)</h3>
+                                                <!-- If: Attempt Max -->
+                                                <ng-container *ngIf="tier.buyin.max_attempts > 1">
+                                                    <p class="mat-body-1">{{tournament.current_player.attempts_towards_entry}} Attempt(s) Towards Entry</p>
+                                                    <mat-progress-bar mode="determinate" [value]="calcPercentAmount(tournament.current_player.attempts_towards_entry, tier.buyin.max_attempts)"></mat-progress-bar>
+                                                    <small class="caption emp-med bottomLabels">
+                                                        <span>Min. {{tier.buyin.min_attempts}}</span>
+                                                        <span>Max. {{tier.buyin.max_attempts}}</span>
+                                                    </small>
+                                                </ng-container>
+                                                <!-- If: Single Attempt -->
+                                                <ng-container *ngIf="tier.buyin.min_attempts === 1 && tier.buyin.max_attempts === 1">
+                                                    <small class="caption emp-med">Every Attempt Scores</small>
+                                                </ng-container>
+                                                <!-- If: Min is greater than 1, Max is Unlimited -->
+                                                <ng-container *ngIf="tier.buyin.min_attempts > 1 && tier.buyin.max_attempts === 0">
+                                                    <mat-progress-bar mode="determinate" [value]="calcPercentAmount(tournament.current_player.attempt_count, tier.buyin.min_attempts)"></mat-progress-bar>
+                                                    <small class="caption emp-med bottomLabels">
+                                                        <span>&nbsp;</span>
+                                                        <span>Min. {{tier.buyin.min_attempts}}</span>
+                                                    </small>
+                                                </ng-container>
+                                                <!-- If: NO Attempt Min/Max -->
+                                                <ng-container *ngIf="tier.buyin.min_attempts === 1 && tier.buyin.max_attempts === 0">
+                                                    <small class="caption emp-med">Unlimited</small>
+                                                </ng-container>
+                                            </div>
+
+                                            <!-- Leaderboard Condition -->
+                                            <div class="row">
+                                                <h3 class="mat-h3">Leaderboard Condition</h3>
+                                                <small class="caption emp-med">{{tier.buyin.match_quota}} Attempt(s)</small>
+                                            </div>
+
+                                        </div>
+                                    </mat-card>
+                                </ng-container>
+                                <!-- <pre>{{tournament.current_player | json}}</pre> -->
+
+                                <!-- Player Rankings -->
+                                <section>
+                                    <h2 class="mat-h2">Leaderboard</h2>
+                                    <div id="rankings">
+                                        <div class="ranking bgWarn" *ngFor="let row of tier.leaderboard; index as i">
+                                            <div class="row" (click)="toggleRow(i)">
+                                                <div class="col rank"><span>Rank </span> {{row.rank_text}}</div>
+                                                <div class="col avatar"><img [src]="row.account ? row.account.avatar : './assets/img/0.png'" [style.backgroundColor]="row.account ? row.account.color : ''"></div>
+                                                <div class="col profile">
+                                                    <p>{{row.account ? row.account.name : 'Open Position'}}</p>
+                                                    <div class="social" *ngIf="row.account">
+                                                        <!-- Epic -->
+                                                        <a matTooltip="Epic" (click)="openUrl($event, 'https://fortnitetracker.com/profile/all/' + row.account.social.epic_username)" target="_blank" *ngIf="row.account.social.epic_username">
+                                                            <img src="./assets/img/connections/epic.png" alt="Epic">
+                                                        </a>
+                                                        <!-- Xbox Gamertag -->
+                                                        <a matTooltip="Xbox" (click)="openUrl($event, 'https://account.xbox.com/en-us/Profile?gamertag=' + row.account.social.xbox_gamertag)" target="_blank" *ngIf="row.account.social.xbox_gamertag">
+                                                            <i class="fab fa-xbox"></i>
+                                                        </a>
+                                                        <!-- Twitch -->
+                                                        <a matTooltip="Twitch" (click)="openUrl($event, row.account.social.twitch)" target="_blank" *ngIf="row.account.social.twitch">
+                                                            <i class="fab fa-twitch"></i>
+                                                        </a>
+                                                        <!-- YouTube -->
+                                                        <a matTooltip="YouTube" (click)="openUrl($event, row.account.social.youtube)" target="_blank" *ngIf="row.account.social.youtube">
+                                                            <i class="fab fa-youtube"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="col score" *ngIf="row.score > 0">
+                                                    <p class="caption emp-med score_text">{{row.score}} Points</p>
+                                                </div>
+                                                <div class="col payout">
+                                                    <ng-container [ngSwitch]="tournament.grand_jackpot.mode">
+                                                        <ng-container *ngSwitchCase="1">
+                                                            <h2 class="mat-h2" *ngIf="row.payout.real_money.raw > 0">{{row.payout.real_money.formatted || "•"}}</h2>
+                                                        </ng-container>
+                                                        <ng-container *ngSwitchCase="2">
+                                                            <h2 class="mat-h2">{{row.payout.game_currency.amount || "•"}}<br><small class="caption">{{row.payout.game_currency.name || "•"}}</small></h2>
+                                                        </ng-container>
+                                                        <ng-container *ngSwitchCase="3">
+                                                            <img class="prizeThumbnail mat-elevation-z4" [src]="row.payout.prizes.image" [title]="row.payout.prizes.caption" [alt]="row.payout.prizes.caption" (click)="viewPrize($event, row)">
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </div>
+                                                <div class="col toggle">
+                                                    <i class="far fa-chevron-down" [ngClass]="{'rotate180': openDrawerId === i || expandAll}"></i>
+                                                </div>
+                                            </div>
+                                            <ul class="drawer" *ngIf="openDrawerId === i || expandAll">
+                                                <ng-container *ngIf="!row.dynamic_scoring"><p class="mat-body-1 textCenter">No stats to display.</p></ng-container>
+                                                <ng-container *ngIf="row.dynamic_scoring">
+                                                    <h3 class="mat-h3">Totals</h3>
+                                                    <ul class="stats">
+                                                        <li *ngFor="let stat of row.dynamic_scoring.stats; index as i">
+                                                            <h4 class="mat-h4 emp-med ellipsis">{{row.dynamic_scoring.labels[i]}}</h4>
+                                                            <h2 class="mat-h2" [ngClass]="{'emp-med': stat === 0}">{{stat ? stat : "•"}}</h2>
+                                                        </li>
+                                                    </ul>
+                                                    <!-- <h3 class="mat-h3">Attempts</h3> -->
+                                                    <!-- <p class="mat-body-1">Not yet available.</p> -->
+                                                </ng-container>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </section>
+
+                            </mat-card>
+
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+
+            </div>
+
+            <!-- <pre style="margin-top: 16px;">{{tournament | json}}</pre> -->
+
+        </ng-container>
+
+    </ng-container>
+
+</app-layout-core>

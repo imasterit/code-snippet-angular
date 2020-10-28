@@ -1,0 +1,32 @@
+<section>
+
+    <header class="sidebarHeader">
+        <h2 class="mat-h2 ellipsis">Deposit via Card</h2>
+        <i class="far fa-times" (click)="sidenavService.toggle('right')"></i>
+    </header>
+    <p class="mat-body-1">Must be within <strong>$5.00 to $1,000.00</strong> and you will be charged an additional <strong>3.5% handling fee</strong>.</p>
+
+    <form name="formDeposit" id="formDeposit" [formGroup]="formDeposit" (ngSubmit)="submit()">
+        <input type="hidden" formControlName="vendor" required>
+        <fieldset>
+            <mat-form-field appearance="fill">
+                <mat-label>Select Payment Method</mat-label>
+                <mat-select placeholder="Select" formControlName="method" required>
+                    <mat-option *ngFor="let pm of paymentMethods; index as i" [value]="pm">{{pm.card_type | uppercase}} ending in {{pm.last4}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Amount</mat-label>
+                <input matInput type="number" formControlName="amount_to_add" (input)="calcHandlingFee(formDeposit.value.amount_to_add)" required>
+                <mat-hint>{{formDeposit.value.amount_to_charge | currency:'en-US':'$'}} With Handling Fee</mat-hint>
+            </mat-form-field>
+            <input type="hidden" formControlName="amount_to_charge">
+        </fieldset>
+        <fieldset>
+            <button mat-raised-button type="submit" color="primary" [disabled]="!formDeposit.valid">Submit</button>
+        </fieldset>
+    </form>
+
+    <!-- <br><pre>{{paymentMethods | json}}</pre><br> -->
+    <!-- <br><pre>{{formDeposit.value | json}}</pre><br> -->
+</section>

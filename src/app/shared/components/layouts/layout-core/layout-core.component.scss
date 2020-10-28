@@ -1,0 +1,54 @@
+// NOTE: moved to ViewEncapsulation Workaround in styles.scss, seee .navpad
+// :host /deep/ #navleft {}
+
+mat-sidenav-container { height: 100%; }
+mat-sidenav, mat-sidenav-content { overflow-y: auto }
+
+// Drawer
+#drawerContainer {
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+}
+#drawerPage {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;
+    overflow: hidden;
+}
+// See full drawer styles in AppDrawer component
+.mat-drawer {border: none; overflow: hidden;}
+
+// Side Nav
+#navleft, #navright {width: 280px;}
+
+// Layers
+.layer {position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;}
+    #layerContent {z-index: 3; overflow-y: auto;}
+    #layerGradient {
+        z-index: 2;
+        // https://cssgradient.io/
+        background: #1D2D3F;
+        background: rgba(29,45,63, 0.66);
+        background: -moz-linear-gradient(0deg, rgba(29,45,63,1) 0%, rgba(29,45,63,0) 100%);
+        background: -webkit-linear-gradient(0deg, rgba(29,45,63,1) 0%, rgba(29,45,63,0) 100%);
+        background: linear-gradient(0deg, rgba(29,45,63,1) 0%, rgba(29,45,63,0) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#1d2d3f",endColorstr="#1d2d3f",GradientType=1);
+    }
+    #layerBackground {z-index: 1;}
+        .bgNoRepeat {
+            background-position: top center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+// Content Wrap
+.contentWrap {
+    margin-left: auto; margin-right: auto; max-width: 1480px; overflow: hidden;
+    padding: 16px 16px 100px; // bottom nav offset
+}
+.fullbleed {
+    position: fixed; top: 65px; left: 100px; right: 0; bottom: 0;
+}
+@media (max-width: 1439px) {
+    .fullbleed {
+        left: 0; right: 0; bottom: 56px;
+    }
+}

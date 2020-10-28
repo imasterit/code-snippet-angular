@@ -1,0 +1,31 @@
+// Jumbotron
+@import '~src/sass/variables';
+
+.jumbotron {
+    background: #242424;
+    margin: -16px 0 32px; overflow: hidden;
+    border-bottom-right-radius: $border-radius; border-bottom-left-radius: $border-radius;
+
+    a {
+        background: url('src/assets/img/jr-bg-pattern.png');
+        display: flex; color: white; height: 320px;
+        justify-content: center; align-items: center;
+        transition: all 1s;
+
+        .middle {
+            flex: 0 0 auto; text-align: center;
+            .logo {width: 150px; height: auto; margin-bottom: 16px; border-radius: 8px;}
+            .bigText {display: block; font-weight: bold; font-size: 36px; line-height: 36px; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,0.5); margin: 0 0 32px;}
+            button {transform: scale(1.3);}
+        }
+    }
+    a:hover {
+        transform: scale(1.1);
+    }
+
+    #splitgate {
+        background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(36,36,36,0.95))), url("src/assets/img/jumbotron/background.gif");
+        background-position: center center;
+        background-size: cover;
+    }
+}

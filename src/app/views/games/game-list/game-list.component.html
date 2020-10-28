@@ -1,0 +1,53 @@
+<app-layout-core [left]="false" [right]="false" [loading]="!games">
+
+    <!-- Layout: Top Bar -->
+    <ng-container top-bar>
+        <mat-toolbar>
+            <mat-toolbar-row>
+                <span>Games</span>
+                <span class="top-bar-spacer"></span>
+                <button mat-icon-button class="top-bar-icon" (click)="searchForm=!searchForm">
+                    <mat-icon aria-label="Search" *ngIf="!searchForm">search</mat-icon>
+                    <mat-icon aria-label="Close" *ngIf="searchForm">close</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </ng-container>
+
+    <!-- Layout: Content -->
+    <ng-container layout-content>
+
+        <!-- Dynamic Section Contents -->
+        <ng-container *ngIf="games">
+
+            <!-- Search -->
+            <form name="formSearch" id="formSearch" [formGroup]="formSearch" *ngIf="searchForm">
+                <mat-form-field appearance="fill">
+                    <mat-icon matPrefix>search</mat-icon>
+                    <mat-label>Search</mat-label>
+                    <input matInput type="search" formControlName="search">
+                </mat-form-field>
+            </form>
+
+            <!-- Filters -->
+            <section class="pad" id="filters">
+                <!-- Vertical - 1:sdk, 2:arcade, 3:overwolf, 4:apilink  -->
+                <mat-button-toggle-group [value]="filterVertical" (change)="getGames($event.value)">
+                    <mat-button-toggle value="all">All</mat-button-toggle>
+                    <mat-button-toggle value="overwolf">Overwolf</mat-button-toggle>
+                    <mat-button-toggle value="sdk">Mobile</mat-button-toggle>
+                    <mat-button-toggle value="arcade">Arcade</mat-button-toggle>
+                    <mat-button-toggle value="apilink">Other</mat-button-toggle>
+                </mat-button-toggle-group>
+            </section>
+
+            <!-- Games List -->
+            <section class="pad" id="gamesList">
+                <app-card *ngFor="let game of games | filter: formSearch.value.search" type="game" [data]="game"></app-card>
+            </section>
+
+        </ng-container>
+
+    </ng-container>
+
+</app-layout-core>

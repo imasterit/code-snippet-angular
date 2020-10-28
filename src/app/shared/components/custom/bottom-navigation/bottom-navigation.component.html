@@ -1,0 +1,17 @@
+<nav class="bottomnav bgPrimary">
+    <!-- Loop Core Nav -->
+    <a *ngFor="let button of navigation; index as i" [routerLink]="button.route" routerLinkActive="active">
+        <i [class]="button.fa_prefix" [ngClass]="button.fa_icon"></i>
+        <span class="label ellipsis">{{button.short}}</span>
+    </a>
+    <!-- QR Scanner -->
+    <a [routerLink]="[account ? '/sync' : '/login']" routerLinkActive="active">
+        <i class="fas fa-qrcode"></i>
+        <span class="label ellipsis">Sync</span>
+    </a>
+    <!-- Account -->
+    <a [routerLink]="[account ? '/account' : '/login']" routerLinkActive="active">
+        <i class="fas fa-user-circle"></i>
+        <span class="label ellipsis">Account</span>
+    </a>
+</nav>

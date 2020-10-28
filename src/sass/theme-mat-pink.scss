@@ -1,0 +1,11 @@
+@import '~@angular/material/prebuilt-themes/pink-bluegrey.css';
+
+// Define Theme
+$mat-pink-theme-primary: mat-palette($mat-pink);
+$mat-pink-theme-accent: mat-palette($mat-blue-grey, A200, A100, A400);
+$mat-pink-theme-warn: mat-palette($mat-red);
+$mat-pink-theme: mat-dark-theme(
+    $mat-pink-theme-primary,
+    $mat-pink-theme-accent,
+    $mat-pink-theme-warn
+);

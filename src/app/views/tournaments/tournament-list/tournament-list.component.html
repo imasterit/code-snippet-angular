@@ -1,0 +1,169 @@
+<app-layout-core [left]="false" [right]="false" [loading]="!pageLoaded">
+
+    <!-- Layout: Top Bar -->
+    <ng-container top-bar>
+        <!-- color="warn" -->
+        <mat-toolbar>
+            <mat-toolbar-row>
+                <span>PlayerHQ</span>
+                <span class="top-bar-spacer"></span>
+                <button mat-icon-button class="top-bar-icon" (click)="searchForm=!searchForm">
+                    <mat-icon aria-label="Search" *ngIf="!searchForm">search</mat-icon>
+                    <mat-icon aria-label="Close" *ngIf="searchForm">close</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </ng-container>
+
+    <!-- Layout: Content -->
+    <ng-container layout-content>
+
+        <!-- Dynamic Section Contents -->
+        <ng-container *ngIf="pageLoaded">
+
+            <!-- Jumbotron -->
+            <app-jumbotron></app-jumbotron>
+
+            <!-- Search -->
+            <form name="formSearch" id="formSearch" [formGroup]="formSearch" *ngIf="searchForm">
+                <mat-form-field appearance="fill">
+                    <mat-icon matPrefix>search</mat-icon>
+                    <mat-label>Search</mat-label>
+                    <input matInput type="search" formControlName="search">
+                </mat-form-field>
+            </form>
+
+            <!-- Tournaments: Featured (only shows if featured tournaments present) -->
+            <ng-container *ngIf="tournaments.featured.data && tournaments.featured.data.length > 0">
+                <section class="pad" *ngIf="tournaments.featured.data">
+                    <app-carousel label="Featured" [data]="tournaments.featured.data">
+                        <ng-container carousel-utility></ng-container>
+                        <ng-container carousel-content *ngIf="tournaments.featured.data && tournaments.featured.data.length > 0; else featuredEmpty">
+                            <div *ngFor="let card of tournaments.featured.data | filter: formSearch.value.search" class="cell">
+                                <app-card type="tournament" [data]="card" (platform)="formSearch.value.search = $event.name"></app-card>
+                            </div>
+                        </ng-container>
+                        <ng-template #featuredEmpty><p class="mat-body-1">No <strong>Featured</strong> tournaments found for that state.</p></ng-template>
+                    </app-carousel>
+                </section>
+                <mat-divider></mat-divider>
+            </ng-container>
+
+            <!-- Tournaments: Overwolf -->
+            <section class="pad" *ngIf="tournaments.overwolf">
+                <app-carousel label="PC / Overwolf" [data]="tournaments.overwolf.data">
+                    <ng-container carousel-utility>
+                        <mat-button-toggle-group [value]="tournaments.overwolf.state" (change)="setRowState(tournaments.overwolf, $event.value)">
+                            <mat-button-toggle [value]="1">Upcoming</mat-button-toggle>
+                            <mat-button-toggle [value]="2">Active</mat-button-toggle>
+                            <mat-button-toggle [value]="3">Done</mat-button-toggle>
+                            <mat-button-toggle [value]="4">Settled</mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </ng-container>
+                    <ng-container carousel-content *ngIf="tournaments.overwolf.data && tournaments.overwolf.data.length > 0; else overwolfEmpty">
+                        <div *ngFor="let card of tournaments.overwolf.data | filter: formSearch.value.search" class="cell">
+                            <app-card type="tournament" [data]="card" (platform)="formSearch.value.search = $event.name"></app-card>
+                        </div>
+                    </ng-container>
+                    <ng-template #overwolfEmpty><p class="mat-body-1">No <strong>Overwolf</strong> tournaments found for that state.</p></ng-template>
+                </app-carousel>
+            </section>
+
+            <mat-divider></mat-divider>
+
+            <!-- NOTE: DO NOT Show On Production -->
+            <!-- If you want to disable this, just drop the whole wrapping ng-container and this will work as intended. -->
+            <!-- <ng-container *ngIf="env.production === false"> -->
+
+                <!-- Tournaments: Topgolf -->
+                <section class="pad" *ngIf="tournaments.topgolf">
+                    <app-carousel label="Topgolf" [data]="tournaments.topgolf.data">
+                        <ng-container carousel-utility>
+                            <mat-button-toggle-group [value]="tournaments.topgolf.state" (change)="setRowState(tournaments.topgolf, $event.value)">
+                                <mat-button-toggle [value]="1">Upcoming</mat-button-toggle>
+                                <mat-button-toggle [value]="2">Active</mat-button-toggle>
+                                <mat-button-toggle [value]="3">Done</mat-button-toggle>
+                                <mat-button-toggle [value]="4">Settled</mat-button-toggle>
+                            </mat-button-toggle-group>
+                        </ng-container>
+                        <ng-container carousel-content *ngIf="tournaments.topgolf.data && tournaments.topgolf.data.length > 0; else topgolfEmpty">
+                            <div *ngFor="let card of tournaments.topgolf.data | filter: formSearch.value.search" class="cell">
+                                <app-card type="tournament" [data]="card" (platform)="formSearch.value.search = $event.name"></app-card>
+                            </div>
+                        </ng-container>
+                        <ng-template #topgolfEmpty><p class="mat-body-1">No <strong>Other</strong> tournaments found for that state.</p></ng-template>
+                    </app-carousel>
+                </section>
+
+                <mat-divider></mat-divider>
+
+            <!-- </ng-container> -->
+
+            <!-- Tournaments: Cross Platform (API Link) -->
+            <section class="pad" *ngIf="tournaments.apilink">
+                <app-carousel label="Cross-Platform" [data]="tournaments.apilink.data">
+                    <ng-container carousel-utility>
+                        <mat-button-toggle-group [value]="tournaments.apilink.state" (change)="setRowState(tournaments.apilink, $event.value)">
+                            <mat-button-toggle [value]="1">Upcoming</mat-button-toggle>
+                            <mat-button-toggle [value]="2">Active</mat-button-toggle>
+                            <mat-button-toggle [value]="3">Done</mat-button-toggle>
+                            <mat-button-toggle [value]="4">Settled</mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </ng-container>
+                    <ng-container carousel-content *ngIf="tournaments.apilink.data && tournaments.apilink.data.length > 0; else apilinkEmpty">
+                        <div *ngFor="let card of tournaments.apilink.data | filter: formSearch.value.search" class="cell">
+                            <app-card type="tournament" [data]="card" (platform)="formSearch.value.search = $event.name"></app-card>
+                        </div>
+                    </ng-container>
+                    <ng-template #apilinkEmpty><p class="mat-body-1">No <strong>Other</strong> tournaments found for that state.</p></ng-template>
+                </app-carousel>
+            </section>
+
+            <mat-divider></mat-divider>
+
+            <!-- Tournaments: Mobile -->
+            <section class="pad" *ngIf="tournaments.sdk">
+                <app-carousel label="Mobile" [data]="tournaments.sdk.data">
+                    <ng-container carousel-utility>
+                        <mat-button-toggle-group [value]="tournaments.sdk.state" (change)="setRowState(tournaments.sdk, $event.value)">
+                            <mat-button-toggle [value]="1">Upcoming</mat-button-toggle>
+                            <mat-button-toggle [value]="2">Active</mat-button-toggle>
+                            <mat-button-toggle [value]="3">Done</mat-button-toggle>
+                            <mat-button-toggle [value]="4">Settled</mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </ng-container>
+                    <ng-container carousel-content *ngIf="tournaments.sdk.data && tournaments.sdk.data.length > 0; else sdkEmpty">
+                        <div *ngFor="let card of tournaments.sdk.data | filter: formSearch.value.search" class="cell">
+                            <app-card type="tournament" [data]="card" (platform)="formSearch.value.search = $event.name"></app-card>
+                        </div>
+                    </ng-container>
+                    <ng-template #sdkEmpty><p class="mat-body-1">No <strong>Mobile</strong> tournaments found for that state.</p></ng-template>
+                </app-carousel>
+            </section>
+
+            <mat-divider></mat-divider>
+
+            <!-- Tournaments: Arcade -->
+            <section class="pad" *ngIf="tournaments.arcade">
+                <app-carousel label="Arcade" [data]="tournaments.arcade.data">
+                    <ng-container carousel-utility>
+                        <mat-button-toggle-group [value]="tournaments.arcade.state" (change)="setRowState(tournaments.arcade, $event.value)">
+                            <mat-button-toggle [value]="1">Upcoming</mat-button-toggle>
+                            <mat-button-toggle [value]="2">Active</mat-button-toggle>
+                            <mat-button-toggle [value]="4">Settled</mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </ng-container>
+                    <ng-container carousel-content *ngIf="tournaments.arcade.data && tournaments.arcade.data.length > 0; else arcadeEmpty">
+                        <div *ngFor="let card of tournaments.arcade.data | filter: formSearch.value.search" class="cell">
+                            <app-card type="tournament" [data]="card" (platform)="formSearch.value.search = $event.name"></app-card>
+                        </div>
+                    </ng-container>
+                    <ng-template #arcadeEmpty><p class="mat-body-1">No <strong>Arcade</strong> tournaments found for that state.</p></ng-template>
+                </app-carousel>
+            </section>
+
+        </ng-container>
+
+    </ng-container>
+
+</app-layout-core>

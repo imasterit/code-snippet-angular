@@ -1,0 +1,34 @@
+<section>
+
+    <header class="sidebarHeader">
+        <h2 class="mat-h2 ellipsis">Connect Epic Account</h2>
+        <i class="far fa-times" (click)="sidenavService.toggle('right')"></i>
+    </header>
+
+    <p class="mat-body-1">Playing on Console? Ensure you've linked your Epic account to Xbox Live, PSN, etc.</p>
+    <p><a mat-stroked-button href="https://epicgames.helpshift.com/a/fortnite/?s=epic-accounts" target="_blank">View Epic's Support Site</a></p>
+
+    <form name="formEpic" id="formEpic" [formGroup]="formEpic" (ngSubmit)="submit()">
+        <fieldset>
+          <mat-form-field appearance="fill"><mat-label>Epic Username</mat-label><input matInput type="text" formControlName="epic_username" required></mat-form-field>
+        </fieldset>
+        <!-- <fieldset>
+            <mat-form-field appearance="fill"><mat-label>Email</mat-label><input matInput type="email" formControlName="email" required></mat-form-field>
+            <mat-form-field appearance="fill"><mat-label>Enter Password</mat-label><input matInput type="password" formControlName="password" required></mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Confirm Password</mat-label>
+                <input matInput type="password" formControlName="confirm_password" required>
+                <mat-hint *ngIf="formEpic.value.password && formEpic.value.confirm_password && formEpic.value.password != formEpic.value.confirm_password">Passwords do NOT match!</mat-hint>
+            </mat-form-field>
+        </fieldset>
+        <fieldset>
+            <p class="mat-body-1">If two factor authentication is enabled for your account you may be required to provide a 2FA code. Please retrieve this from your email (might take a couple minutes) then provide it in the field below before submitting again.</p>
+            <mat-form-field appearance="fill"><mat-label>2FA Code (optional)</mat-label><input matInput type="text" formControlName="code"></mat-form-field>
+        </fieldset> -->
+        <fieldset>
+            <button mat-raised-button type="submit" color="primary" [disabled]="!formEpic.valid">Submit</button>
+        </fieldset>
+    </form>
+
+    <!-- <br><pre>{{formEpic.value | json}}</pre><br> -->
+</section>

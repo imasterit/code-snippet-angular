@@ -1,0 +1,44 @@
+<div id="wrap">
+
+    <!-- Form: Register -->
+    <form name="formRegister" id="formRegister" [formGroup]="formRegister" (ngSubmit)="submit(formRegister)">
+        <fieldset id="register">
+            <button mat-stroked-button routerLink="/login">Return to Login Form</button>
+        </fieldset>
+        <fieldset>
+            <app-jrm-avatars [random]="true" (avatarChange)="set('avatar',$event)" (colorChange)="set('color',$event)"></app-jrm-avatars>
+            <input type="hidden" formControlName="avatar">
+            <input type="hidden" formControlName="color">
+        </fieldset>
+        <fieldset>
+            <mat-form-field appearance="fill"><mat-label>Email</mat-label><input matInput type="email" formControlName="email" (change)="checkEmailUnique()" required></mat-form-field>
+            <mat-form-field appearance="fill"><mat-label>Username</mat-label><input matInput type="text" formControlName="username" (change)="checkPlayernameUnique()" required></mat-form-field>
+        </fieldset>
+        <fieldset>
+            <mat-form-field appearance="fill"><mat-label>Enter Password</mat-label><input matInput type="password" formControlName="password" required></mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Confirm Password</mat-label><input matInput type="password" formControlName="confirm_password" required>
+                <mat-hint *ngIf="formRegister.value.password && formRegister.value.confirm_password && formRegister.value.password != formRegister.value.confirm_password">Passwords do NOT match!</mat-hint>
+            </mat-form-field>
+        </fieldset>
+        <fieldset>
+            <mat-form-field appearance="fill"><mat-label>First Name</mat-label><input matInput type="text" formControlName="first_name" required></mat-form-field>
+            <mat-form-field appearance="fill"><mat-label>Last Name</mat-label><input matInput type="text" formControlName="last_name" required></mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Birthday</mat-label>
+                <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="birthday" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </fieldset>
+        <fieldset class="textCenter">
+            <mat-slide-toggle formControlName="accept_terms">Agree to <a href="https://terms.jackpotrising.com/" target="_blank">Terms and Conditions</a></mat-slide-toggle>
+        </fieldset>
+        <fieldset>
+            <!-- Verify: form valid, accept ticked, and paswords match -->
+            <button mat-raised-button type="submit" class="submit" color="primary" [disabled]="!formRegister.valid || !formRegister.value.accept_terms || (formRegister.value.password != formRegister.value.confirm_password)">Submit Registration</button>
+        </fieldset>
+        <!-- <fieldset><pre>{{formRegister.value | json}}</pre></fieldset> -->
+    </form>
+
+</div>

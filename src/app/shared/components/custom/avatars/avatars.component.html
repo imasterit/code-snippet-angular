@@ -1,0 +1,21 @@
+<!-- Avatars -->
+<div id="avatars" *ngIf="avatars">
+    <div id="current" [matMenuTriggerFor]="avatarlist">
+        <img [src]="avatars[avatarIndex].url" class="bgWarn mat-elevation-z4" [style.backgroundColor]="colors[colorIndex]">
+    </div>
+    <mat-menu #avatarlist="matMenu">
+        <div id="gridAvatars">
+            <ng-container *ngFor="let a of avatars; index as i">
+                <img *ngIf="i !== 0" [src]="a.url" class="bgWarn" [style.backgroundColor]="colors[colorIndex]" (click)="pickAvatar(i)">
+            </ng-container>
+        </div>
+    </mat-menu>
+    <button mat-raised-button color="warn" [matMenuTriggerFor]="colorPicker">Pick Color</button>
+    <mat-menu #colorPicker="matMenu">
+        <div id="gridColors">
+            <div *ngFor="let c of colors; index as i" class="color" [style.backgroundColor]="c" (click)="pickColor(i)"></div>
+        </div>
+    </mat-menu>
+    <!-- <input type="color" [(ngModel)]="colors[colorIndex]"> -->
+    <!-- <br><pre>{{avatars | json}}</pre> -->
+</div>

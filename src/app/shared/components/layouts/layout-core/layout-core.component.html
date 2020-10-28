@@ -1,0 +1,60 @@
+<!-- Mat Drawer Container -->
+<mat-drawer-container id="drawerContainer">
+
+    <!-- Material Drawer -->
+    <mat-drawer #drawer mode="side" position="start" [opened]="drawerState">
+        <app-drawer></app-drawer>
+    </mat-drawer>
+
+    <!-- Material Drawer Content -->
+    <mat-drawer-content id="drawerPage" #fullscreen appScroller>
+
+        <!-- Material Sidenav Container -->
+        <mat-sidenav-container>
+
+            <!-- Nav Left -->
+            <mat-sidenav #navLeft id="navleft" [mode]="layoutMobile ? 'over' : 'side'" opened="true" *ngIf="left">
+                <div class="navpad">
+                    <ng-content select="[layout-nav-left]"></ng-content>
+                </div>
+            </mat-sidenav>
+
+            <!-- Nav Right -->
+            <mat-sidenav #navRight id="navright" mode="over" position="end" *ngIf="right">
+                <div class="navpad">
+                    <ng-content select="[layout-nav-right]"></ng-content>
+                </div>
+            </mat-sidenav>
+
+            <!-- Content -->
+            <mat-sidenav-content id="sidenavContent">
+
+                <div class="layer" id="layerContent">
+
+                    <!-- Progress Bar -->
+                    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+                    <!-- Top Bar -->
+                    <ng-content select="[top-bar]"></ng-content>
+
+                    <!-- Bottom Nav Bar (mobile only) -->
+                    <app-bottom-navigation *ngIf="layoutMobile ? true : false"></app-bottom-navigation>
+
+                    <!-- Content Wrap -->
+                    <section [ngClass]="{'contentWrap': !fullbleed, 'fullbleed': fullbleed}">
+                        <!-- <button (click)="toggleFullscreen()">Toggle Fullscreen</button> -->
+                        <ng-content select="[layout-content]"></ng-content>
+                    </section>
+
+                </div>
+
+                <div class="layer" id="layerGradient" *ngIf="background"></div>
+                <div class="layer" id="layerBackground" [ngClass]="{'bgNoRepeat': background}" [style.backgroundImage]="generateBackgroundStyle()"></div>
+
+            </mat-sidenav-content>
+
+        </mat-sidenav-container>
+
+    </mat-drawer-content>
+
+</mat-drawer-container>

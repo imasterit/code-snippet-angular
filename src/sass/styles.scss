@@ -1,0 +1,241 @@
+@import 'theme';
+@import 'variables'; // @import '~src/sass/variables';
+
+// Resets ---
+
+* {
+    margin: 0; padding: 0; border: none;
+    outline:0; // chrome fix
+}
+
+// Disable Scrollbars Globally
+// *::-webkit-scrollbar { width: 0 !important }
+// * { overflow: -moz-scrollbars-none; }
+// * { -ms-overflow-style: none; }
+
+// Styles Scrollbars
+// https://css-tricks.com/custom-scrollbars-in-webkit/
+::-webkit-scrollbar {
+    width: 4px; height: 4px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.6);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(0,0,0,0.6);
+}
+
+// Reset Search Styles:
+input[type="search"] {
+    -webkit-appearance: none;
+}
+
+// Reset Chrome Autofill Styles
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    border: none !important;
+    -webkit-text-fill-color: white !important;
+    -webkit-box-shadow: 0 0 0px 1000px rgba(0,0,0,0) inset;
+    box-shadow: 0 0 0px 1000px rgba(0,0,0,0) inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+// Typography ---
+
+p+p {margin-top: 16px;}
+
+a { color: rgba(255,255,255,0.3); text-decoration: none; cursor: pointer; }
+a:hover, a:active, a:focus { color: rgba(255,255,255,0.6); }
+
+ul, ol {
+    li {list-style-position: inside; list-style-type: square;}
+    li+li {margin-top: 8px;}
+}
+
+pre {
+    background: #242424; padding: 16px; border-radius: $border-radius;
+    overflow-x: auto;
+}
+pre+pre {margin-top: 16px;}
+
+.emp-high {opacity: 1;}
+.emp-med {opacity: 0.6;}
+.emp-disabled {opacity: 0.38;}
+.ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+// Globals ---
+
+html, body { height: 100%; }
+body { color: white; font-family: Roboto, "Helvetica Neue", sans-serif; margin: 0; }
+
+// Form
+form {
+    mat-form-field {width: 100%;}
+    fieldset+fieldset {margin-top: 16px;}
+    label {
+        display: block;
+        h4 {margin-bottom: 8px;}
+    }
+    label+label {margin-top: 16px;}
+}
+input[type="datetime-local"] {
+    font-family: Roboto, "Helvetica Neue", sans-serif; color: white; font-size: 16px; line-height: 18px;
+    display: block; box-sizing: border-box; width: 100%;
+    background: rgba(255,255,255,0.1); padding: 16px;
+    border-bottom: 2px solid rgba(255,255,255,0.6);
+    &:active, &:focus, &:hover { border-bottom: 2px solid white; }
+}
+
+// Table
+table, mat-table { width: 100%; }
+
+// Classes ---
+
+.tip {cursor: help;}
+.rounded {border-radius: $border-radius; overflow: hidden;}
+
+.textCenter {text-align: center;}
+
+.floatLeft { float: left; }
+.floatRight { float: right; }
+
+.paddingSixteen {padding: 16px;}
+.pad+.pad { margin-top: 15px; }
+.button-row {
+    button+button, button+a, a+button, a+a {margin-left: 8px;}
+    a {display: inline-block;}
+}
+.button-stack {
+    display: flex; flex-direction: column;
+    button {display: flex;}
+    button+button {margin-top: 8px;}
+}
+
+.tabWrap {padding-top: 32px;}
+.tabWrap1px {margin-top: 1px;}
+
+.sidebarHeader {
+    display: flex; align-items: center; margin-bottom: 16px;
+    h2, i {margin: 0;}
+    h2 {flex: 1;}
+    i {flex: 0 0 auto; font-size: 24px; line-height: 24px;}
+}
+
+// Table
+@media (max-width: 1480px) {
+    .tableWrap {
+        overflow-x: auto;
+        table, mat-table {width: 1500px;}
+    }
+}
+.tableSelectable {
+    tr:hover, tr:active,
+    mat-row:hover, mat-row:active { background: rgba(255,255,255,0.033); cursor: pointer; }
+}
+.actions {
+    width: 100%;
+    display: flex; padding: 8px 0; align-items: center; justify-content: flex-end;
+    li {flex: 0 0 auto; list-style: none;}
+    li+li {margin-left: 8px}
+    .mat-icon-button {
+        opacity: 0.6;
+        &:hover, &:active, &:focus {opacity: 1;}
+    }
+}
+
+.colorPickers {
+    display: flex;
+    li {flex: 1; list-style: none;}
+    li+li {margin: 0 0 0 16px;}
+    .swatch {
+        margin-bottom: 8px;
+        width: 100%; height: 100px;
+    }
+}
+
+// Tab Icon
+.tabIcon {margin-right: 8px;}
+
+// Form Row
+.form-row {
+    display: flex;
+    .field {flex: 1;}
+    .field+.field {margin: 0 0 0 16px;}
+}
+@media (max-width: 1200px) {
+    // NOTE: need to expand this to be more explicit per the # of columns
+    .form-row {
+        display: flex; flex-direction: column;
+        .field+.field {margin: 0;}
+    }
+}
+
+// ViewEncapsulation Workaround ---
+
+// Top Bar
+mat-toolbar {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0; z-index: 999;
+}
+.mat-toolbar {
+    background: rgba(29,45,63,0.95) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+    .top-bar-hamburger {font-size: 24px; line-height: 24px; margin-right: 32px; cursor: pointer;}
+    .top-bar-icon { padding: 0 14px; font-size: 20px; line-height: 20px; }
+    .top-bar-spacer { flex: 1 1 auto; }
+:fullscreen .mat-toolbar {display: none;} // note: hide during fullscreen
+
+// Layout Core
+.navpad {
+    padding: 16px;
+    section+section { margin-top: 16px; }
+    button, a, .mat-button-toggle-group {width: 100%;}
+}
+
+// Animations ---
+
+// Hover
+@keyframes hover {
+    0% {transform: scale(1);}
+    50% {transform: scale(1.25);}
+    100% {transform: scale(1);}
+}
+
+// Anmiated Background
+// https://www.transparenttextures.com/
+// animation: animatedBackground 5s linear infinite;
+@keyframes animatedBackground {
+	from { background-position: 0 0; }
+	to { background-position: -400px -400px; }
+}
+.bgAnim {
+    background: url("src/assets/img/jr-bg-pattern.png") repeat;
+    animation: animatedBackground 45s linear infinite;
+}
+
+// Tossing
+@keyframes tossing {
+	0% { transform: rotate(-5deg); }
+	50% { transform: rotate(5deg); }
+	100% { transform: rotate(-5deg); }
+}
+
+// Glow
+@keyframes glow {
+    0%   {background: #78f2ff;}
+    50%  {background: #48e8ff;}
+    100% {background: #78f2ff;}
+}

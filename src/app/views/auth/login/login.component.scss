@@ -1,0 +1,13 @@
+@import '../auth-children.scss';
+
+#social {
+    display: flex;
+    button {flex: 1; width: initial; padding: 4px 0;}
+    button+button {margin-left: 16px;}
+    i {font-size: 24px; line-height: 24px;}
+}
+#submssion {
+    display: flex;
+    button: {flex: 1;}
+    button+button {margin-left: 16px;}
+}

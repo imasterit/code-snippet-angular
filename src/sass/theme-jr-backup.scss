@@ -1,0 +1,101 @@
+// The Jackpot Rising Theme
+
+@import url('https://fonts.googleapis.com/css?family=Oswald|Roboto+Condensed');
+@import "@material/typography/mdc-typography";
+
+// VARS --------------------------------------------------------------
+
+$shape-radius: 8px;
+
+// Colors
+$surface: #1D2D3F;
+$surface-light: #3E546D;
+$surface-dark: #242424;
+
+$primary: #DC334A;
+$primary-900: #C02137;
+$primary-800: #CF2C42;
+$primary-700: #DC334A;
+$primary-600: #EF3C52;
+$primary-500: #FE4453; //
+$primary-400: #F6576A;
+$primary-300: #E97886;
+$primary-200: #F19EA8;
+$primary-100: #FED0DA;
+$primary-50: #FEECF1;
+
+$secondary: #78f2ff;
+$secondary-900: #007D81;
+$secondary-800: #00A1AF;
+$secondary-700: #00B6C8;
+$secondary-600: #00CCE4;
+$secondary-500: #00DEF9;
+$secondary-400: #00E4FA;
+$secondary-300: #31EBFE;
+$secondary-200: #78F2FF;
+$secondary-100: #B1F7FE;
+$secondary-50: #E0FCFF;
+
+// THEME -------------------------------------------------------------
+
+$mdc-theme-primary: $primary;
+$mdc-theme-secondary: $secondary;
+$mdc-theme-on-primary: #FFFFFF;
+$mdc-theme-on-secondary: #242424;
+
+$mdc-theme-background: $surface !default;
+$mdc-theme-surface: $mdc-theme-background !default;
+
+// TYPOGRAPHY --------------------------------------------------------
+
+$font-oswald: 'Oswald', sans-serif;
+$font-roboto-condensed: 'Roboto Condensed', sans-serif;
+
+// Default Font
+$mdc-typography-font-family: $font-roboto-condensed;
+
+// Emphasis
+.emp-high {opacity: 1;}
+.emp-med {opacity: 0.6;}
+.emp-disabled {opacity: 0.38;}
+.ellipsis { display: block; @include mdc-typography-overflow-ellipsis; }
+
+// Text Color
+.mdc-typography--headline1,
+.mdc-typography--headline2,
+.mdc-typography--headline3,
+.mdc-typography--headline4,
+.mdc-typography--headline5,
+.mdc-typography--headline6,
+.mdc-typography--subtitle1,
+.mdc-typography--subtitle2,
+.mdc-typography--body1,
+.mdc-typography--body2,
+.mdc-typography--caption,
+.mdc-typography--button,
+.mdc-typography--overline { color: white; };
+
+// Heading 1-6
+.mdc-typography--headline1,
+.mdc-typography--headline2,
+.mdc-typography--headline3,
+.mdc-typography--headline4,
+.mdc-typography--headline5,
+.mdc-typography--headline6 { font-family: $font-oswald };
+
+// Subtitle 1 & 2
+// .mdc-typography--subtitle1 {};
+// .mdc-typography--subtitle2 {};
+
+// Body 1 & 2
+.mdc-typography--body1,
+.mdc-typography--body2 { opacity: 0.5; };
+
+// Caption
+.mdc-typography--caption { opacity: 0.75; };
+
+// Button
+.mdc-typography--button { font-family: $font-oswald };
+
+// Overline
+.mdc-typography--overline { font-family: $font-oswald };

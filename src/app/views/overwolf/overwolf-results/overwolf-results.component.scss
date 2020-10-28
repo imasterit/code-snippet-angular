@@ -1,0 +1,60 @@
+// Overwolf
+@import '~src/sass/variables';
+
+#top {
+    background: #141414; height: 200px;
+    margin: -16px 0 32px; padding: 16px; overflow: hidden;
+    border-bottom-right-radius: $border-radius; border-bottom-left-radius: $border-radius;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.25);
+    display: flex; justify-content: center; align-items: center;
+
+    div {
+        text-align: center;
+        .mat-display-3 {
+            font-weight: bold; text-transform: uppercase; margin: 0 0 16px 0; padding: 0; text-shadow: 0 0 20px rgba(0,0,0,1);
+            sup {font-size: 18px; line-height: 18px;}
+        }
+        .buttons {
+            button i {margin-left: 4px;}
+            button+button {margin-left: 16px;}
+        }
+    }
+}
+
+#statGrid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: auto;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+
+    .stat {
+        margin-top: 16px; text-align: center;
+        i {
+            font-size: 36px; line-height: 36px;
+            height: 36px; width: 36px; margin: -32px 0 0; padding: 18px; text-align: center;
+            border-radius: 100%;
+        }
+        .mat-h2, .mat-display-3, .mat-body-1 {margin: 0; padding: 0;}
+        i, .mat-h2, .mat-display-3 {margin-bottom: 16px;}
+            // .mat-h2 {background: red;}
+            // .mat-display-3 {background: green;}
+            // .mat-body-1 {background: blue;}
+        .value {height: 64px; line-height: 64px !important; vertical-align: middle;}
+    }
+}
+@media (max-width: 1300px) {
+    #statGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+@media (max-width: 900px) {
+    #statGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 600px) {
+    #statGrid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

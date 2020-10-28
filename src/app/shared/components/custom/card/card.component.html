@@ -1,0 +1,66 @@
+<ng-container *ngIf="data">
+
+    <!-- Card: Tournament -->
+    <mat-card class="card cardTournament" mat-ripple *ngIf="type === 'tournament'" [routerLink]="['/tournaments', data.id]">
+        <div>
+            <mat-card-header>
+                <div mat-card-avatar class="avatar bgWarn mat-elevation-z4">
+                    <img [src]="data.game.icon" class="icon" alt="Icon">
+                </div>
+                <mat-card-title>
+                    <!-- Mode - 1:Real-Money, 2:Game Currency, 3:Prizes -->
+                    <ng-container *ngIf="data.grand_jackpot.mode === 1">{{data.grand_jackpot.real_money.formatted}}</ng-container>
+                    <ng-container *ngIf="data.grand_jackpot.mode === 2">{{data.grand_jackpot.game_currency.amount}} {{data.grand_jackpot.game_currency.name}}</ng-container>
+                    <ng-container *ngIf="data.grand_jackpot.mode === 3">{{data.grand_jackpot.prizes}} Prize(s)</ng-container>
+                    <ng-container *ngIf="!data.grand_jackpot.mode">(Jackpot Missing)</ng-container>
+                    <i class="fas fa-check-circle colorPrimary iconPadRight" *ngIf="data.current_player && data.current_player.user_has_entered"></i>
+                </mat-card-title>
+                <mat-card-subtitle><i class="fas fa-clock"></i> {{data.duration.from_now.formatted}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="row">
+                    <h4 class="mat-h4 ellipsis"[title]="data.name">{{data.name || "(Name Missing)"}}</h4>
+                </div>
+                <div class="row">
+                    <p class="caption"><i class="fas fa-users colorPrimary iconPadRight"></i> <span class="emp-med">{{data.stats.competitors}} Competitors</span></p>
+                </div>
+                <div class="row">
+                    <mat-chip-list>
+                        <mat-chip *ngFor="let chip of data.platforms; index as i" (click)="selectPlatform(chip.name)">{{chip.name}}</mat-chip>
+                    </mat-chip-list>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-icon-button matTooltip="View This Game" [routerLink]="['/games', data.game.id]"><i class="fas fa-gamepad"></i></button>
+                <button mat-icon-button matTooltip="Share Tournament" *ngIf="ctx.isAndroid() || ctx.isIos()" (click)="share($event, data.name, 'Compete in this tournament on PlayerHQ, powered by Jackpot Rising', '/tournaments/' + data.id)"><i class="fas fa-share-alt"></i></button>
+            </mat-card-actions>
+            <mat-card-footer></mat-card-footer>
+        </div>
+    </mat-card>
+
+    <!-- Card: Game -->
+    <mat-card class="card cardGame" mat-ripple *ngIf="type === 'game'" [routerLink]="['/games', data.id]">
+        <div>
+            <div class="media" [ngStyle]="{'background-image': 'url(' + data.media.backsplash + ')'}">
+                <img [src]="data.media.icon" class="icon bgWarn mat-elevation-z4" alt="Icon">
+            </div>
+            <mat-card-content>
+                <mat-card-title>{{data.name}}</mat-card-title>
+                <mat-card-subtitle>By {{data.property.name}}</mat-card-subtitle>
+            </mat-card-content>
+            <mat-card-content>
+                <mat-chip-list>
+                    <mat-chip *ngFor="let chip of data.verticals; index as i">{{chip.name || '•'}}</mat-chip>
+                    <mat-chip *ngFor="let chip of data.platforms; index as i">{{chip.name || '•'}}</mat-chip>
+                    <mat-chip *ngFor="let chip of data.genres; index as i">{{chip.name || '•'}}</mat-chip>
+                </mat-chip-list>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-icon-button matTooltip="View Tournaments" [routerLink]="['/tournaments', data.id]"><i class="fas fa-trophy"></i></button>
+                <button mat-icon-button matTooltip="Share Tournament" *ngIf="ctx.isAndroid() || ctx.isIos()" (click)="share($event, data.name, 'Get this game on PlayerHQ, powered by Jackpot Rising', '/games/' + data.id)"><i class="fas fa-share-alt"></i></button>
+            </mat-card-actions>
+            <mat-card-footer></mat-card-footer>
+        </div>
+    </mat-card>
+
+</ng-container>

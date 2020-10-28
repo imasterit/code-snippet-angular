@@ -1,0 +1,35 @@
+<app-layout-core [left]="false" [right]="false" [fullbleed]="true">
+
+        <!-- Layout: Top Bar -->
+        <ng-container top-bar>
+            <mat-toolbar color="warn">
+                <mat-toolbar-row>
+                    <span>Sync</span>
+                    <span class="top-bar-spacer"></span>
+                </mat-toolbar-row>
+            </mat-toolbar>
+        </ng-container>
+
+        <!-- Layout: Content -->
+        <ng-container layout-content>
+
+            <!-- QR Scanner -->
+            <div id="scanner" *ngIf="playingState === false">
+                <div id="loading" *ngIf="loading">
+                    <button mat-stroked-button class="large" (click)="enterCode()">Enter Code</button>
+                </div>
+                <video #vid hidden></video>
+                <canvas #can id="canvas" hidden></canvas>
+            </div>
+
+            <!-- Attempt in Progress -->
+            <section id="inProgress" *ngIf="playingState === true">
+              <div class="pad">
+                  <h2 class="mdc-typography--headline2">Attempt in Progress</h2>
+                  <p class="mdc-typography--body1">You're up! Put your phone down and play!</p>
+              </div>
+            </section>
+
+        </ng-container>
+
+</app-layout-core>

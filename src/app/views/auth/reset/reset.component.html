@@ -1,0 +1,21 @@
+<div id="wrap">
+
+    <!-- Form: Login -->
+    <form name="formReset" id="formReset" [formGroup]="formReset" (ngSubmit)="submit()">
+        <fieldset id="register">
+            <button mat-stroked-button routerLink="/login">Return to Login Form</button>
+        </fieldset>
+        <fieldset>
+            <mat-form-field appearance="fill"><mat-label>Enter Password</mat-label><input matInput type="password" formControlName="password" required></mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Confirm Password</mat-label>
+                <input matInput type="password" formControlName="confirm_password" required>
+                <mat-hint *ngIf="formReset.value.password && formReset.value.confirm_password && formReset.value.password != formReset.value.confirm_password">Passwords do NOT match!</mat-hint>
+            </mat-form-field>
+        </fieldset>
+        <fieldset>
+            <button mat-raised-button type="submit" class="submit" color="primary" [disabled]="!formReset.valid || (formReset.value.password != formReset.value.confirm_password)">Reset Password</button>
+        </fieldset>
+    </form>
+
+</div>

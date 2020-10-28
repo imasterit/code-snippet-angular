@@ -1,0 +1,12 @@
+<div class="dialog">
+    <h1 mat-dialog-title>{{data.title}}</h1>
+    <p class="mat-body-1" mat-dialog-content *ngIf="data.message">{{data.message}}</p>
+    <div mat-dialog-content>
+        <mat-action-list>
+            <button *ngFor="let item of data.list" mat-list-item (click)="select(item)">{{item.label}}</button>
+        </mat-action-list>
+    </div>
+    <div mat-dialog-actions class="floatRight">
+        <button mat-button (click)="onNoClick()">Cancel</button>
+    </div>
+</div>

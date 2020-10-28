@@ -1,0 +1,23 @@
+<section>
+
+    <header class="sidebarHeader">
+        <h2 class="mat-h2 ellipsis">Withdraw Request</h2>
+        <i class="far fa-times" (click)="sidenavService.toggle('right')"></i>
+    </header>
+
+    <p class="mat-body-1">Withdraws may take 3-5 business days to process. View <strong>Account > Transaction History</strong> for the status of each request.</p>
+    <p class="mat-body-1">Minimum amount is <strong>$10.00</strong>.</p>
+
+    <form name="formWithdraw" id="formWithdraw" [formGroup]="formWithdraw" (ngSubmit)="submit()">
+        <input type="hidden" formControlName="type" required>
+        <fieldset>
+            <mat-form-field appearance="fill"><mat-label>Amount</mat-label><input matInput type="number" formControlName="amount" required></mat-form-field>
+            <mat-form-field appearance="fill"><mat-label>Paypal Email</mat-label><input matInput type="email" formControlName="paypal_email" required></mat-form-field>
+        </fieldset>
+        <fieldset>
+            <button mat-raised-button type="submit" color="primary" [disabled]="!formWithdraw.valid">Submit</button>
+        </fieldset>
+    </form>
+
+    <!-- <br><pre>{{formWithdraw.value | json}}</pre><br> -->
+</section>

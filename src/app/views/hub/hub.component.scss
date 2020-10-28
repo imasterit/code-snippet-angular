@@ -1,0 +1,60 @@
+// Hub
+
+#twitch {
+    display: flex; justify-content: center; align-items: center;
+    border-radius: 8px; overflow: hidden;
+    .cell {flex: 1;}
+
+    #vid, #chat {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 */
+        height: 0;
+
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+@media (max-width: 767px) {
+    #twitch {
+        display: initial;
+        #chat {display: none;}
+    }
+}
+
+#social, #apps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+
+    .mat-card {
+        cursor: pointer; text-align: center;
+        i {font-size: 40px; line-height: 40px; margin-bottom: 8px;}
+        h4 {margin: 0;}
+    }
+}
+#apps {
+    grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 767px) {
+    #social, #apps {
+        .mat-card {
+            i {font-size: 30px; line-height: 30px; margin-bottom: 0;}
+            h4 {display: none;}
+        }
+    }
+}
+@media (max-width: 320px) {
+    #social, #apps {
+        .mat-card {
+            padding: 10px;
+            i {font-size: 20px; line-height: 20px; margin-bottom: 0;}
+        }
+    }
+}

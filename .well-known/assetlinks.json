@@ -1,0 +1,25 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.jackpotrising.playerhq",
+    "sha256_cert_fingerprints":
+    ["BA:4D:10:67:2E:0F:7A:1D:54:F7:83:96:63:8B:3A:FA:DF:3D:A8:A3:82:89:23:75:BA:E7:CA:C3:D2:52:4D:59"]
+  }
+},
+{
+  "relation": ["delegate_permission/common.get_login_creds"],
+  "target": {
+    "namespace": "web",
+    "site": "https://playerhq.jackpotrising.com"
+  }
+},
+{
+  "relation": ["delegate_permission/common.get_login_creds"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.jackpotrising.playerhq",
+    "sha256_cert_fingerprints":
+    ["BA:4D:10:67:2E:0F:7A:1D:54:F7:83:96:63:8B:3A:FA:DF:3D:A8:A3:82:89:23:75:BA:E7:CA:C3:D2:52:4D:59"]
+  }
+}]

@@ -1,0 +1,28 @@
+<div id="wrap">
+
+    <!-- Form: Login -->
+    <form name="formLogin" id="formLogin" [formGroup]="formLogin" (ngSubmit)="submit()">
+        <fieldset id="register">
+            <a mat-raised-button color="primary" routerLink="/register">Register Now</a>
+        </fieldset>
+        <mat-divider></mat-divider>
+        <fieldset>
+            <div id="social">
+                <button mat-raised-button type="button" color="primary" (click)="onSocialLogin('facebook')"><i class="fab fa-facebook-square"></i></button>
+                <button mat-raised-button type="button" color="primary" (click)="onSocialLogin('google-oauth2')"><i class="fab fa-google-plus-square"></i></button>
+                <button mat-raised-button type="button" color="primary" (click)="onSocialLogin('twitch')"><i class="fab fa-twitch"></i></button>
+            </div>
+        </fieldset>
+        <fieldset>
+            <mat-form-field appearance="fill"><mat-label>Email</mat-label><input matInput type="email" formControlName="username" required></mat-form-field>
+            <mat-form-field appearance="fill"><mat-label>Password</mat-label><input matInput type="password" formControlName="password" required></mat-form-field>
+        </fieldset>
+        <fieldset>
+            <div id="submssion">
+                <button mat-raised-button type="submit" class="submit" color="primary" [disabled]="!formLogin.valid">Login Now</button>
+                <button mat-stroked-button type="button" (click)="promptForgotEmail()">Forgot</button>
+            </div>
+        </fieldset>
+    </form>
+
+</div>

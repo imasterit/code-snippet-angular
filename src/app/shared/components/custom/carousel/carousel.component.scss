@@ -1,0 +1,114 @@
+// // Carousel
+// @import '~src/sass/variables';
+
+// .wrap {
+//     position: relative; padding: 8px 0;
+//     transition: background-color, padding 100ms linear;
+
+//     // Disable User Select
+//     // https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting
+//     -webkit-touch-callout: none; /* iOS Safari */
+//     -webkit-user-select: none; /* Safari */
+//     -moz-user-select: none; /* Firefox */
+//     -ms-user-select: none; /* IE/Edge */
+//     user-select: none; /* Chrome/Opera */
+
+//     .left, .right {display: none; opacity: 0;}
+//     .left {
+//         border-top-right-radius: $border-radius;
+//         border-bottom-right-radius: $border-radius;
+//     }
+//     .right {
+//         border-top-left-radius: $border-radius;
+//         border-bottom-left-radius: $border-radius;
+//     }
+// }
+// // Only show for desktop+
+// @media (min-width: 1025px) {
+//     .wrap:hover {
+//         background-color: rgba(0,0,0,0.1); padding: 8px 50px;
+//         .left, .right {display: initial; opacity: 1; transition: opacity 100ms linear;}
+//     }
+// }
+//     .left, .right {
+//         cursor: pointer;
+//         position: absolute; top: 0; z-index: 1;
+//         height: 100%; width: 50px;
+//         i {font-size: 40px; line-height: 40px;}
+//     }
+//     .left {left: 0px;}
+//     .right {right: 0px;}
+
+//     .carousel {
+//         display: flex; // padding: 0 16px;
+
+//         // Mobile Smooth Scroll
+//         overflow-x: scroll;
+//         -webkit-overflow-scrolling: touch;
+
+//         // Disable Visible Scroll
+//         &::-webkit-scrollbar { display: none; } // chrome, safari
+//         -ms-overflow-style: none; // IE 10+
+//         overflow: -moz-scrollbars-none; // firefox (legacy)
+//     }
+
+// // Cells
+// :host ::ng-deep .cell { flex: 0 0 auto; }
+// :host ::ng-deep .cell + .cell { margin-left: 16px; }
+// :host ::ng-deep .cell:last-child { padding-right: 16px; }
+
+.carousel {
+
+    // Disable User Select
+    // https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE/Edge */
+    user-select: none; /* Chrome/Opera */
+
+    header {
+        margin-bottom: 16px;
+        display: flex; align-items: center;
+        .cell {flex: 0 0 auto;}
+        .cell+.cell {margin: 0 0 0 16px;}
+        .spacer {flex: 1;}
+            i {font-size: 24px; line-height: 24px;}
+            .mat-h2 {margin: 0; padding: 0;}
+            .buttons {
+                button+button {margin-left: 8px;}
+            }
+    }
+    @media (max-width: 1024px) {
+        header {
+            .buttons {display: none;}
+        }
+    }
+    @media (max-width: 767px) {
+        header {
+            flex-direction: column; align-items: flex-start;
+            .cell+.cell {margin: 16px 0 0}
+        }
+    }
+
+    .content {
+        display: flex; // padding: 0 16px;
+
+        // Mobile Smooth Scroll
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
+
+        // Disable Visible Scroll
+        &::-webkit-scrollbar { display: none; } // chrome, safari
+        -ms-overflow-style: none; // IE 10+
+        overflow: -moz-scrollbars-none; // firefox (legacy)
+    }
+    @media (max-width: 1600px) {
+        .content {margin: 0 -16px; padding: 0 16px;}
+    }
+}
+
+// Cells
+:host ::ng-deep .cell { flex: 0 0 auto; }
+:host ::ng-deep .cell + .cell { margin-left: 16px; }
+:host ::ng-deep .cell:last-child { padding-right: 16px; }

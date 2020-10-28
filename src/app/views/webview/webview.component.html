@@ -1,0 +1,21 @@
+<app-layout-core [left]="false" [right]="false" [fullbleed]="true">
+
+    <!-- Layout: Top Bar -->
+    <ng-container top-bar>
+        <mat-toolbar color="warn">
+            <mat-toolbar-row>
+                <span>{{title}}</span>
+                <span class="top-bar-spacer"></span>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </ng-container>
+
+    <!-- Layout: Content -->
+    <ng-container layout-content>
+
+        <!-- Content -->
+        <iframe id="webview" [src]="source | safe" frameborder="0" cellspacing="0"></iframe>
+
+    </ng-container>
+
+</app-layout-core>

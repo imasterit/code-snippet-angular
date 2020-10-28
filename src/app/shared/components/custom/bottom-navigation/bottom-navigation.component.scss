@@ -1,0 +1,17 @@
+.bottomnav {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 999;
+    display: flex; align-items: center;
+
+    a {
+        flex: 0 0 20%; color: white; text-align: center;
+        padding: 10px 0;
+        opacity: 0.33;
+
+        i {font-size: 20px; line-height: 20px;}
+        span {
+            font-size: 12px; line-height: 12px;
+            display: block; margin-top: 4px;
+        }
+    }
+    a:hover, a:active, a:focus, .active {opacity: 1;}
+}

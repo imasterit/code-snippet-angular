@@ -1,0 +1,62 @@
+<app-layout-core [left]="false" [right]="false">
+
+        <!-- Layout: Top Bar -->
+        <ng-container top-bar>
+            <mat-toolbar color="warn">
+                <mat-toolbar-row>
+                    <span>Overwolf</span>
+                    <span class="top-bar-spacer"></span>
+                    <mat-icon class="top-bar-icon" aria-hidden="false" (click)="help()">help</mat-icon>
+                </mat-toolbar-row>
+            </mat-toolbar>
+        </ng-container>
+
+        <!-- Layout: Content -->
+        <ng-container layout-content>
+
+            <!-- Awaiting Match -->
+            <ng-container *ngIf="false">
+                <mat-card>
+                    <h2 class="mat-h2 textCenter">Awaiting Match</h2>
+                </mat-card>
+            </ng-container>
+
+            <!-- Match Started -->
+            <ng-container>
+                <header id="top" class="pad">
+                    <div>
+                        <h1 class="mat-display-3">Playername</h1>
+                        <h1 class="mat-h1">XXX Total Points</h1>
+                        <div class="buttons">
+                            <button mat-raised-button color="primary" [matMenuTriggerFor]="menuTourn">Set Tournament <i class="fas fa-caret-down emp-med"></i></button>
+                            <button mat-raised-button color="primary" [matMenuTriggerFor]="menuTier">Set Tier <i class="fas fa-caret-down emp-med"></i></button>
+                            <mat-menu #menuTourn="matMenu">
+                                <button mat-menu-item>Item 1</button>
+                                <button mat-menu-item>Item 2</button>
+                            </mat-menu>
+                            <mat-menu #menuTier="matMenu">
+                                <button mat-menu-item>Item 3</button>
+                                <button mat-menu-item>Item 4</button>
+                            </mat-menu>
+                        </div>
+                    </div>
+                </header>
+                <section class="pad"><pre>overwolfGlobalStore: {{overwolfGlobalStore | json}}</pre></section>
+                <section id="statGrid" class="pad">
+
+                    <!-- Stat Card -->
+                    <mat-card class="stat" *ngFor="let stat of [0,0,0,0,0,0,0,0,0]; index as i">
+                        <i class="fas fa-skull bgPrimary"></i>
+                        <h2 class="mat-h2">Title</h2>
+                        <div class="value">
+                            <h3 class="mat-display-3">100</h3>
+                        </div>
+                        <p class="mat-body-1">XXX Points</p>
+                    </mat-card>
+
+                </section>
+            </ng-container>
+
+        </ng-container>
+
+    </app-layout-core>

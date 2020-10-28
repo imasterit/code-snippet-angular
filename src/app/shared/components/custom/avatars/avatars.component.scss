@@ -1,0 +1,43 @@
+// Avatars
+
+#avatars {
+    width: 150px; margin: auto;
+    button {width: 100%; margin-top: 8px;}
+    #current {
+        img {
+            cursor: pointer;
+            border: 2px solid white;
+            width: 150px; height: 150px;
+            border-radius: 100%;
+            transition: background-color 200ms linear;
+        }
+        img:hover {border-color: rgba(255,255,255,0.66);}
+    }
+}
+::ng-deep #gridAvatars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    margin: -8px 0; padding: 16px; max-height: 200px; overflow-y: auto;
+
+    img {
+        width: 50px; height: 50px;
+        border-radius: 100%;
+        transition: background-color 200ms linear;
+    }
+}
+::ng-deep #gridColors {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: auto;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    margin: -8px 0; padding: 16px; max-height: 200px; overflow-y: auto;
+
+    .color {
+        width: 25px; height: 25px;
+        border-radius: 100%;
+    }
+}

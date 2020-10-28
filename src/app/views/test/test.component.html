@@ -1,0 +1,369 @@
+<app-layout-core [left]="true" [right]="true">
+
+    <!-- Layout: Top Bar -->
+    <ng-container top-bar>
+        <mat-toolbar color="warn">
+            <mat-toolbar-row>
+                <i class="far fa-bars top-bar-hamburger" (click)="sidenavService.toggle('left')"></i>
+                <span>TestLab</span>
+                <span class="top-bar-spacer"></span>
+                <mat-icon class="top-bar-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
+                <!-- <a mat-stroked-button href="https://material.angular.io" target="_blank">Angular Material Docs</a> -->
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </ng-container>
+
+    <!-- Layout: Nav Left -->
+    <ng-container layout-nav-left>
+        <section>
+            <p class="mat-body-1">This is a sandbox area for testing various Angular functionality and components.</p>
+        </section>
+        <section><button mat-raised-button color="primary">Action</button></section>
+        <section>
+            <mat-button-toggle-group #group="matButtonToggleGroup" [value]="sections[0]" vertical="true">
+                <mat-button-toggle *ngFor="let s of sections; index as i" [value]="s">{{s.name}}</mat-button-toggle>
+            </mat-button-toggle-group>
+        </section>
+    </ng-container>
+
+    <!-- Layout: Nav Right -->
+    <ng-container layout-nav-right>
+        <p>Side Nav Right</p>
+    </ng-container>
+
+    <!-- Layout: Content -->
+    <ng-container layout-content>
+
+        <!-- Dynamic Section Contents -->
+        <ng-container *ngIf="group">
+
+            <!-- Overwolf -->
+            <section class="pad" *ngIf="group.value.id === 10">
+                <h3 class="mat-h3">Trigger</h3>
+                <div class="button-row">
+                    <button mat-raised-button color="primary" (click)="overwolfService.ping()">Ping OW</button>
+                    <button mat-raised-button color="primary" (click)="overwolfService.verifyOverwolf()">Verify OW</button>
+                    <button mat-raised-button color="primary" (click)="overwolfService.fetchOverwolfGlobalStore()">Fetch OW Global Store</button>
+                    <button mat-raised-button color="primary" (click)="overwolfService.triggerAppRestart()">Trigger App Restart</button>
+                </div>
+                <br><br>
+                <h3 class="mat-h3">Data State</h3>
+                <pre>isOverwolfWrapper: {{isOverwolfWrapper | json}}</pre><br>
+                <pre>overwolfGlobalStore: {{overwolfGlobalStore | json}}</pre>
+            </section>
+
+            <!-- Account -->
+            <section class="pad" *ngIf="group.value.id === 9">
+                <button mat-raised-button color="primary" (click)="accountService.getAccount()">Refresh</button>
+                <br><br>
+                <pre>{{account | json}}</pre>
+            </section>
+
+            <!-- Status Codes -->
+            <section class="pad" *ngIf="group.value.id === 8">
+                <ul>
+                    <li><button mat-raised-button color="primary" (click)="triggerStatus(400)">Status: 400</button></li>
+                    <li><button mat-raised-button color="primary" (click)="triggerStatus(401)">Status: 401</button></li>
+                    <li><button mat-raised-button color="primary" (click)="triggerStatus(403)">Status: 403</button></li>
+                    <li><button mat-raised-button color="primary" (click)="triggerStatus(404)">Status: 404</button></li>
+                    <li><button mat-raised-button color="primary" (click)="triggerStatus(498)">Status: 498 ***</button></li>
+                    <li><button mat-raised-button color="primary" (click)="triggerStatus(500)">Status: 500</button></li>
+                    <li><button mat-raised-button color="primary" (click)="triggerStatus(502)">Status: 502</button></li>
+                    <li><button mat-raised-button color="primary" (click)="triggerStatus(503)">Status: 503</button></li>
+                    <li><button mat-raised-button color="primary" (click)="triggerStatus(504)">Status: 504</button></li>
+                    <li><button mat-raised-button color="primary" (click)="triggerStatus(521)">Status: 521</button></li>
+                </ul>
+            </section>
+
+            <!-- Table -->
+            <section class="pad" *ngIf="group.value.id === 7">
+                <mat-table [dataSource]="dataSource" class="mat-elevation-z8 tableSelectable" matSort>
+
+                    <!-- Column: id -->
+                    <ng-container matColumnDef="id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Column: name -->
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Column: code -->
+                    <ng-container matColumnDef="code">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Code</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.code | uppercase}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Column: country_code -->
+                    <ng-container matColumnDef="country_code">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Country Code</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.country_code | uppercase}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Column: can_play_for_money -->
+                    <ng-container matColumnDef="can_play_for_money">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Can Play For Money</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.can_play_for_money ? '✓' : '-'}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Column: can_play_for_free_money -->
+                    <ng-container matColumnDef="can_play_for_free_money">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Can Play for Free Money</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.can_play_for_free_money ? '✓' : '-'}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Column: can_play_for_free -->
+                    <ng-container matColumnDef="can_play_for_free">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Can Play for Free</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.can_play_for_free ? '✓' : '-'}}</mat-cell>
+                    </ng-container>
+
+                    <!-- Column: can_play_sweeps -->
+                    <ng-container matColumnDef="can_play_sweeps">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Can Play Sweeps</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.can_play_sweeps ? '✓' : '-'}}</mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectTableRow(row)"></mat-row>
+                </mat-table>
+            </section>
+
+            <!-- Mat: Menu -->
+            <section class="pad" *ngIf="group.value.id === 6">
+                <button mat-raised-button [matMenuTriggerFor]="menuSimple">Menu</button>
+                <mat-menu #menuSimple="matMenu">
+                    <button mat-menu-item>Item 1</button>
+                    <button mat-menu-item>Item 2</button>
+                </mat-menu>
+
+                <br><br>
+
+                <button mat-icon-button [matMenuTriggerFor]="menuIcons">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menuIcons="matMenu">
+                    <button mat-menu-item>
+                        <mat-icon>dialpad</mat-icon>
+                        <span>Redial</span>
+                    </button>
+                    <button mat-menu-item disabled>
+                        <mat-icon>voicemail</mat-icon>
+                        <span>Check voicemail</span>
+                    </button>
+                    <button mat-menu-item>
+                        <mat-icon>notifications_off</mat-icon>
+                        <span>Disable alerts</span>
+                    </button>
+                </mat-menu>
+
+                <br><br>
+
+                <button mat-button [matMenuTriggerFor]="animals">Animal index</button>
+                <mat-menu #animals="matMenu">
+                    <button mat-menu-item [matMenuTriggerFor]="vertebrates">Vertebrates</button>
+                    <button mat-menu-item [matMenuTriggerFor]="invertebrates">Invertebrates</button>
+                </mat-menu>
+                <mat-menu #vertebrates="matMenu">
+                    <button mat-menu-item [matMenuTriggerFor]="fish">Fishes</button>
+                    <button mat-menu-item [matMenuTriggerFor]="amphibians">Amphibians</button>
+                    <button mat-menu-item [matMenuTriggerFor]="reptiles">Reptiles</button>
+                    <button mat-menu-item>Birds</button>
+                    <button mat-menu-item>Mammals</button>
+                </mat-menu>
+                <mat-menu #invertebrates="matMenu">
+                    <button mat-menu-item>Insects</button>
+                    <button mat-menu-item>Molluscs</button>
+                    <button mat-menu-item>Crustaceans</button>
+                    <button mat-menu-item>Corals</button>
+                    <button mat-menu-item>Arachnids</button>
+                    <button mat-menu-item>Velvet worms</button>
+                    <button mat-menu-item>Horseshoe crabs</button>
+                </mat-menu>
+                <mat-menu #fish="matMenu">
+                    <button mat-menu-item>Baikal oilfish</button>
+                    <button mat-menu-item>Bala shark</button>
+                    <button mat-menu-item>Ballan wrasse</button>
+                    <button mat-menu-item>Bamboo shark</button>
+                    <button mat-menu-item>Banded killifish</button>
+                </mat-menu>
+                <mat-menu #amphibians="matMenu">
+                    <button mat-menu-item>Sonoran desert toad</button>
+                    <button mat-menu-item>Western toad</button>
+                    <button mat-menu-item>Arroyo toad</button>
+                    <button mat-menu-item>Yosemite toad</button>
+                </mat-menu>
+                <mat-menu #reptiles="matMenu">
+                    <button mat-menu-item>Banded Day Gecko</button>
+                    <button mat-menu-item>Banded Gila Monster</button>
+                    <button mat-menu-item>Black Tree Monitor</button>
+                    <button mat-menu-item>Blue Spiny Lizard</button>
+                    <button mat-menu-item disabled>Velociraptor</button>
+                </mat-menu>
+            </section>
+
+            <!-- Mat: Modals -->
+            <section class="pad" *ngIf="group.value.id === 5">
+                <div class="button-row">
+                    <button mat-raised-button (click)="openDialog({title: 'Test Message', message: 'Message 1'})">Trigger Message</button>
+                    <button mat-raised-button (click)="openDialog({title: 'Test Confirm', message: 'Message 2', confirm: true})">Trigger Confirm</button>
+                    <button mat-raised-button (click)="openDialogList()">Trigger List</button>
+                    <button mat-raised-button (click)="openDialogImage()">Trigger Image</button>
+                </div>
+                <h3 class="mat-h3">Snackbars</h3>
+                <div class="button-row">
+                    <button mat-raised-button (click)="openSnackbar('This is snackbar 1!')">Trigger: Snackbar 1</button>
+                    <button mat-raised-button (click)="openSnackbar('This is snackbar 2!')">Trigger: Snackbar 2</button>
+                </div>
+            </section>
+
+            <!-- Mat: Forms -->
+            <section class="pad" *ngIf="group.value.id === 4">
+                <form name="formProfile" id="formProfile" [formGroup]="formProfile" (ngSubmit)="submitFormProfile()">
+                    <fieldset>
+                        <mat-form-field appearance="fill"><mat-label>First Name</mat-label><input matInput type="text" formControlName="firstName" required></mat-form-field>
+                        <mat-form-field appearance="fill"><mat-label>Last Name</mat-label><input matInput type="text" formControlName="lastName"></mat-form-field>
+                    </fieldset>
+                    <fieldset formGroupName="address">
+                        <mat-form-field appearance="fill"><mat-label>Street</mat-label><input matInput type="text" formControlName="street"></mat-form-field>
+                        <mat-form-field appearance="fill"><mat-label>City</mat-label><input matInput type="text" formControlName="city"></mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>State</mat-label>
+                            <mat-select placeholder="Select" formControlName="state">
+                                <mat-option value="ca">California</mat-option>
+                                <mat-option value="ny">New York</mat-option>
+                                <mat-option value="tx">Texas</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill"><mat-label>Zip</mat-label><input matInput type="number" formControlName="zip"></mat-form-field>
+                    </fieldset>
+                    <fieldset>
+                        <mat-form-field appearance="fill"><mat-label>Comments</mat-label><textarea rows="5" matInput type="text" formControlName="comments"></textarea></mat-form-field>
+                    </fieldset>
+                    <fieldset>
+                        <button  mat-raised-button color="primary" type="submit" [disabled]="!formProfile.valid">Submit Form</button>
+                    </fieldset>
+                </form>
+                <br>
+                <!-- <pre>{{formProfile | json}}</pre> -->
+                <pre>status: {{formProfile.status | json}}</pre>
+                <pre>value: {{formProfile.value | json}}</pre>
+            </section>
+
+            <!-- Mat: Sidenav -->
+            <section class="pad" *ngIf="group.value.id === 2">
+                <div class="button-row">
+                    <button mat-raised-button (click)="sidenavService.toggle('left')">Toggle Left</button>
+                    <button mat-raised-button (click)="sidenavService.toggle('right')">Toggle Right</button>
+                </div>
+            </section>
+
+            <!-- Mat: Buttons -->
+            <section class="pad" *ngIf="group.value.id === 1">
+                <div class="button-row">
+                    <button mat-button>Basic</button>
+                    <button mat-button color="primary">Primary</button>
+                    <button mat-button color="accent">Accent</button>
+                    <button mat-button color="warn">Warn</button>
+                    <button mat-button disabled>Disabled</button>
+                    <a mat-button routerLink=".">Link</a>
+                </div>
+                <h3 class="mat-h3">Raised Buttons</h3>
+                <div class="button-row">
+                    <button mat-raised-button>Basic</button>
+                    <button mat-raised-button color="primary">Primary</button>
+                    <button mat-raised-button color="accent">Accent</button>
+                    <button mat-raised-button color="warn">Warn</button>
+                    <button mat-raised-button disabled>Disabled</button>
+                    <a mat-raised-button routerLink=".">Link</a>
+                </div>
+                <h3 class="mat-h3">Stroked Buttons</h3>
+                <div class="button-row">
+                    <button mat-stroked-button>Basic</button>
+                    <button mat-stroked-button color="primary">Primary</button>
+                    <button mat-stroked-button color="accent">Accent</button>
+                    <button mat-stroked-button color="warn">Warn</button>
+                    <button mat-stroked-button disabled>Disabled</button>
+                    <a mat-stroked-button routerLink=".">Link</a>
+                </div>
+                <h3 class="mat-h3">Flat Buttons</h3>
+                <div class="button-row">
+                    <button mat-flat-button>Basic</button>
+                    <button mat-flat-button color="primary">Primary</button>
+                    <button mat-flat-button color="accent">Accent</button>
+                    <button mat-flat-button color="warn">Warn</button>
+                    <button mat-flat-button disabled>Disabled</button>
+                    <a mat-flat-button routerLink=".">Link</a>
+                </div>
+                <h3 class="mat-h3">Icon Buttons</h3>
+                <div class="button-row">
+                    <button mat-icon-button>
+                        <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary">
+                        <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+                    </button>
+                    <button mat-icon-button color="accent">
+                        <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn">
+                        <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+                    </button>
+                    <button mat-icon-button disabled>
+                        <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+                    </button>
+                </div>
+                <h3 class="mat-h3">Fab Buttons</h3>
+                <div class="button-row">
+                    <button mat-fab>Basic</button>
+                    <button mat-fab color="primary">Primary</button>
+                    <button mat-fab color="accent">Accent</button>
+                    <button mat-fab color="warn">Warn</button>
+                    <button mat-fab disabled>Disable</button>
+                    <button mat-fab>
+                        <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+                    </button>
+                    <a mat-fab routerLink=".">Link</a>
+                </div>
+
+                <h3 class="mat-h3">Mini Fab Buttons</h3>
+                <div class="button-row">
+                    <button mat-mini-fab>Basic</button>
+                    <button mat-mini-fab color="primary">Prim</button>
+                    <button mat-mini-fab color="accent">Acc</button>
+                    <button mat-mini-fab color="warn">Warn</button>
+                    <button mat-mini-fab disabled>Dis</button>
+                    <button mat-mini-fab>
+                        <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+                    </button>
+                    <a mat-mini-fab routerLink=".">Link</a>
+                </div>
+            </section>
+
+            <!-- Mat: Typography -->
+            <section class="pad" *ngIf="group.value.id === 0">
+                <!-- Display (for hero banner) -->
+                <h1 class="mat-display-4">Display 4</h1>
+                <h1 class="mat-display-3">Display 3</h1>
+                <h1 class="mat-display-2">Display 2</h1>
+                <h1 class="mat-display-1">Display 1</h1>
+                <!-- Headings -->
+                <h1 class="mat-h1">Heading 1</h1>
+                <h2 class="mat-h2">Heading 2</h2>
+                <h3 class="mat-h3">Heading 3</h3>
+                <h4 class="mat-h4">Heading 4</h4>
+                <!-- Body -->
+                <p class="mat-body-2">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia qui fuga consequuntur molestiae? Omnis ducimus eveniet laborum veniam magni illo unde assumenda ex suscipit nihil, magnam dicta placeat aliquid non?</p>
+                <p class="mat-body-1">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia qui fuga consequuntur molestiae? Omnis ducimus eveniet laborum veniam magni illo unde assumenda ex suscipit nihil, magnam dicta placeat aliquid non?</p>
+                <!-- Special -->
+                <p class="caption">Caption Text</p>
+            </section>
+
+        </ng-container>
+
+    </ng-container>
+
+</app-layout-core>
